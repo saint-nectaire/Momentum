@@ -1,4 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
+import Homepage from "./pages/Homepage";
+import Aboutpage from "./pages/Aboutpage";
+import Errorpage from "./pages/Errorpage";
 
 function App() {
 

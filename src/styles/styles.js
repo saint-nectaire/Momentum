@@ -17,4 +17,13 @@ export const containerStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     p: 2,
+  };
+
+  export const paperStyles = {
+    display: 'flex',
+    width: '90vw',
+    justifyContent: 'space-between',
+    padding: '5px',
+    margin: '2px',
+    alignItems: 'center'
   }

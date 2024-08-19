@@ -1,37 +1,48 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { useState } from "react";
-import { Paper } from "@mui/material";
-import { paperStyles } from "../styles/styles";
+import { Divider, FormControl, IconButton, InputLabel, MenuItem, Paper, Select } from "@mui/material";
+import { closeButton, paperStyles, exercisePaperStyles } from "../styles/styles";
 import AddIcon from '@mui/icons-material/Add';
-import { IconButton } from "@mui/material";
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import CloseIcon from '@mui/icons-material/Close';
-import { styled } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { NINJA_API, NINJA_KEY } from "../config/api";
 
 
 
 
 function AddWorkout() {
-// workout is an array of exercises
   const [workout, setWorkout] = useState([]);
+  const [exercises, setExercises] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
-
-    let data, filterMethod = "muscle", filterType = "biceps" 
+  const [muscle, setMuscle] = useState('');
+  const [exerciseType, setExerciseType] = useState('');
+  const [difficulty, setDifficulty] = useState('');
 
     useEffect(() => {
-        axios.get('https://api.api-ninjas.com/v1/exercises'+`?${filterMethod}=${filterType}`, {headers: { 'X-Api-Key': '/2l4M9V5VpBLETtKJzc5Mw==mPTtJXrI5qzXquuf' }})
+        const queryParams = [];
+
+        if (muscle.length !== 0) {
+            queryParams.push(`muscle=${muscle}`);
+        }
+        if (exerciseType.length !== 0) {
+            queryParams.push(`type=${exerciseType}`);
+        }
+        if (difficulty.length !== 0) {
+            queryParams.push(`difficulty=${difficulty}`);
+        }
+    
+        const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+
+        axios.get(NINJA_API + queryString, {headers: { 'X-Api-Key': NINJA_KEY }})
         .then((response) => {
-            data = response.data
-            setWorkout([...workout, data[0]])
+            setExercises([...response.data])
         })
         .catch((error) => {console.log(error)})
-    }, [])
+    }, [muscle, exerciseType, difficulty])
 
     const handleClickOpen = () => {
         setDialogOpen(true);
@@ -41,64 +52,136 @@ function AddWorkout() {
         setDialogOpen(false);
     }
 
+    const handleChangeMuscle = (e) => {
+        setMuscle(e.target.value)
+    }
+
+    const handleChangeType = (e) => {
+        setExerciseType(e.target.value)
+    }
+
+    const handleChangeDifficulty = (e) => {
+        setDifficulty(e.target.value)
+    }
+
     return ( 
         <>
 
             {workout && workout.map((exercise, i) => {
                 return(
-                    <div key={i}>
-                        <Paper sx={paperStyles} elevation={10} square={false}>exercise {i+1}</Paper>
-                    </div>
+                        <Paper 
+                            key={i} 
+                            sx={paperStyles} 
+                            elevation={10} 
+                            square={false}
+                        >
+                            {exercise.name}
+                        </Paper>
                 )
             })} 
 
             <Paper sx={paperStyles} elevation={10} square={false}>
                 add exercise
-                <IconButton onClick={handleClickOpen} color='secondary'><AddIcon /></IconButton>
+                <IconButton onClick={handleClickOpen}><AddIcon /></IconButton>
             </Paper>
-
-
-
 
 
             <Dialog
                 onClose={handleClickClose}
-                aria-labelledby="customized-dialog-title"
                 open={dialogOpen}
             >
                 <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                    Modal title
+                    Choose an exercise
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
                     onClick={handleClickClose}
-                    sx={{
-                        position: 'absolute',
-                        right: 8,
-                        top: 8,
-                        color: (theme) => theme.palette.grey[500],
-                    }}
+                    sx={closeButton}
                 >
                     <CloseIcon />
                 </IconButton>
+
                 <DialogContent dividers>
-                    <Typography gutterBottom>
-                        Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-                        dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-                        consectetur ac, vestibulum at eros.
-                    </Typography>
-                    <Typography gutterBottom>
-                        Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-                        Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-                    </Typography>
-                    <Typography gutterBottom>
-                        Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
-                        magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
-                        ullamcorper nulla non metus auctor fringilla.
-                    </Typography>
+                    <FormControl>
+                        <InputLabel id="muscle-select-label">Muscle</InputLabel>
+                        <Select 
+                            labelId="muscle-select-label"
+                            id="muscle-select"
+                            value={muscle}
+                            onChange={handleChangeMuscle}
+                            >
+                                <MenuItem value={"abdominals"}>Abdominals</MenuItem>
+                                <MenuItem value={"abductors"}>Abductors</MenuItem>
+                                <MenuItem value={"adductors"}>Adductors</MenuItem>
+                                <MenuItem value={"biceps"}>Biceps</MenuItem>
+                                <MenuItem value={"calves"}>Calves</MenuItem>
+                                <MenuItem value={"chest"}>Chest</MenuItem>
+                                <MenuItem value={"forearms"}>Forearms</MenuItem>
+                                <MenuItem value={"glutes"}>Glutes</MenuItem>
+                                <MenuItem value={"hamstrings"}>Hamstrings</MenuItem>
+                                <MenuItem value={"lats"}>Lats</MenuItem>
+                                <MenuItem value={"lower_back"}>Lower Back</MenuItem>
+                                <MenuItem value={"middle_back"}>Middle Back</MenuItem>
+                                <MenuItem value={"neck"}>Neck</MenuItem>
+                                <MenuItem value={"quadriceps"}>Quadriceps</MenuItem>
+                                <MenuItem value={"traps"}>Traps</MenuItem>
+                                <MenuItem value={"triceps"}>Triceps</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    <FormControl>
+                        <InputLabel id="exercise-type-select-label">Exercise Type</InputLabel>
+                        <Select 
+                            labelId="exercise-type-select-label"
+                            id="exercise-type-select"
+                            value={exerciseType}
+                            onChange={handleChangeType}
+                            >
+                                <MenuItem value={"cardio"}>Cardio</MenuItem>
+                                <MenuItem value={"olympic_weightlifting"}>Olympic weightlifting</MenuItem>
+                                <MenuItem value={"plyometrics"}>Plyometrics</MenuItem>
+                                <MenuItem value={"powerlifting"}>Powerlifting</MenuItem>
+                                <MenuItem value={"strength"}>Strength</MenuItem>
+                                <MenuItem value={"stretching"}>Stretching</MenuItem>
+                                <MenuItem value={"strongman"}>Strongman</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    <FormControl>
+                        <InputLabel id="difficulty-select-label">Difficulty</InputLabel>
+                        <Select 
+                            labelId="difficulty-select-label"
+                            id="difficulty-select"
+                            value={difficulty}
+                            onChange={handleChangeDifficulty}
+                            >
+                                <MenuItem value={"beginner"}>Beginner</MenuItem>
+                                <MenuItem value={"intermediate"}>Intermediate</MenuItem>
+                                <MenuItem value={"expert"}>Expert</MenuItem>
+                        </Select>
+                    </FormControl>
+                    
+                    <Divider />
+
+                    {exercises.map((exercise, i) => {
+                        return(
+                            <Paper 
+                                key={i} 
+                                sx={exercisePaperStyles} 
+                                elevation={10} 
+                                square={false}
+                            >
+                                {exercise.name}
+
+                                <IconButton onClick={() => {setWorkout([...workout, exercise])}}><AddIcon /></IconButton>
+                            </Paper>
+                        )
+
+                    })}
+
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={handleClickClose}>
+                    <Button variant="contained" autoFocus onClick={handleClickClose}>
                         Save changes
                     </Button>
                 </DialogActions>

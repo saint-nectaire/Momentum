@@ -27,3 +27,18 @@ export const containerStyles = {
     margin: '2px',
     alignItems: 'center'
   }
+
+  export const exercisePaperStyles = {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between',
+    padding: '5px',
+    margin: '2px',
+    alignItems: 'center'
+  }
+
+  export const closeButton = {
+    position: 'absolute',
+    right: 8,
+    top: 8
+}

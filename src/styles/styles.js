@@ -2,6 +2,8 @@ export const containerStyles = {
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
+    flex: '1 1 100vh',
+
   };
   
   export const mainBoxStyles = {
@@ -42,3 +44,14 @@ export const containerStyles = {
     right: 8,
     top: 8
 }
+
+  export const logoStyles = {
+    height: 70,
+    width: 'auto',
+  }
+  
+  export const toolBarStyles = { 
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  }

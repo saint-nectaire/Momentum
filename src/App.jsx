@@ -3,7 +3,8 @@ import Homepage from './pages/Homepage';
 import Aboutpage from './pages/Aboutpage';
 import Errorpage from './pages/Errorpage';
 import Footer from './components/Footer';
-import { Container, Box, Typography, CssBaseline } from '@mui/material';
+import Navbar from './components/Navbar';
+import { Container, Box, CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { containerStyles, mainBoxStyles } from './styles/styles';
 
@@ -28,15 +29,11 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline /> 
+      <Navbar />
       <Container
         component="main"
-        maxWidth="lg"
         sx={containerStyles}
       >
-        <Typography variant="h1" component="h1">
-          Saint-nectaire
-        </Typography>
-
         <Box
           component="main"
           sx={mainBoxStyles}
@@ -47,8 +44,8 @@ function App() {
             <Route path="/*" element={<Errorpage />} />
           </Routes>
         </Box>
-
         <Footer />
+
       </Container>
     </ThemeProvider>
   );

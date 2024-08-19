@@ -4,6 +4,7 @@ import Aboutpage from './pages/Aboutpage';
 import Errorpage from './pages/Errorpage';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 import { Container, Box, CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { containerStyles, mainBoxStyles } from './styles/styles';
@@ -34,6 +35,7 @@ function App() {
         component="main"
         sx={containerStyles}
       >
+        <Sidebar />
         <Box
           component="main"
           sx={mainBoxStyles}

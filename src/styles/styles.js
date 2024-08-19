@@ -24,6 +24,7 @@ export const containerStyles = {
     width: '100%',
     bgcolor: 'background.default',
     p: 2,
+    zIndex: theme => theme.zIndex.drawer + 1,
   };
   
 
@@ -58,6 +59,7 @@ export const containerStyles = {
   
   export const toolBarStyles = { 
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center'
   }
+

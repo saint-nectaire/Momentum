@@ -14,6 +14,9 @@ const theme = createTheme({
     primary: {
       main: "#998FC7", // Indigo
     },
+    secondary: {
+      main: "#28262C", // Indigo
+    },
     background: {
       default: "#28262C", // Light Black
       paper: "#998FC7",  // Indigo
@@ -30,7 +33,24 @@ const theme = createTheme({
       color: "#E0E0E0", // Light Gray
     },
   },
+  components: {
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+            backgroundColor: '#F0F0F0', // Light Gray
+        },
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#F0F0F0', // Light Gray
+        },
+      },
+    },
+  },
 });
+
 
 function App() {
   return (

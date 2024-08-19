@@ -5,6 +5,7 @@ import Errorpage from './pages/Errorpage';
 import Footer from './components/Footer';
 import { Container, Box, Typography, CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { containerStyles, mainBoxStyles } from './styles/styles';
 
 const theme = createTheme({
   palette: {
@@ -30,11 +31,7 @@ function App() {
       <Container
         component="main"
         maxWidth="lg"
-        sx={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          minHeight: '100vh',
-        }}
+        sx={containerStyles}
       >
         <Typography variant="h1" component="h1">
           Saint-nectaire
@@ -42,13 +39,7 @@ function App() {
 
         <Box
           component="main"
-          sx={{ 
-            flex: 1, 
-            display: 'flex', 
-            justifyContent: 'center', 
-            alignItems: 'center',
-            bgcolor: 'background.paper', 
-          }}
+          sx={mainBoxStyles}
         >
           <Routes>
             <Route path="/" element={<Homepage />} />

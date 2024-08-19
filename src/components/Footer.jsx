@@ -1,15 +1,11 @@
 import { Box, Typography, Link } from '@mui/material';
+import { footerStyles } from '../styles/styles'
 
 function Footer() {
   return (
     <Box
       component="footer"
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        p: 2,
-      }}
+      sx={footerStyles}
     >
       <Typography variant="body2">
         <Link

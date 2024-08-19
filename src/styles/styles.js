@@ -18,8 +18,14 @@ export const containerStyles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    bgcolor: 'background.default',
     p: 2,
   };
+  
 
   export const paperStyles = {
     display: 'flex',

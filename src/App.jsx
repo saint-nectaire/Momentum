@@ -44,9 +44,8 @@ function App() {
             <Route path="/*" element={<Errorpage />} />
           </Routes>
         </Box>
-        <Footer />
-
       </Container>
+      <Footer />
     </ThemeProvider>
   );
 }

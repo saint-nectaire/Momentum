@@ -3,17 +3,11 @@ export const containerStyles = {
     flexDirection: 'column',
     minHeight: '100vh',
     flex: '1 1 100vh',
-
-  };
-  
-  export const mainBoxStyles = {
-    flex: 1,
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    bgcolor: 'background.paper',
+
   };
-  
+
   export const footerStyles = {
     display: 'flex',
     justifyContent: 'center',

@@ -5,9 +5,9 @@ import Errorpage from './pages/Errorpage';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
-import { Container, Box, CssBaseline } from '@mui/material';
+import { Container, CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { containerStyles, mainBoxStyles } from './styles/styles';
+import { containerStyles } from './styles/styles';
 
 const theme = createTheme({
   palette: {
@@ -23,6 +23,12 @@ const theme = createTheme({
     h1: {
       color: "#998FC7", // Indigo
     },
+    h4: {
+      color: "#E0E0E0", // Light Gray
+    },
+    subtitle1:{
+      color: "#E0E0E0", // Light Gray
+    },
   },
 });
 
@@ -36,16 +42,11 @@ function App() {
         sx={containerStyles}
       >
         <Sidebar />
-        <Box
-          component="main"
-          sx={mainBoxStyles}
-        >
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/about" element={<Aboutpage />} />
             <Route path="/*" element={<Errorpage />} />
           </Routes>
-        </Box>
       </Container>
       <Footer />
     </ThemeProvider>

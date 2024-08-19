@@ -1,7 +1,10 @@
+import AddWorkout from "../components/AddWorkout";
+
 function Homepage() {
     return (
         <div>
-            <h1>Home</h1>
+            <AddWorkout/>
+
         </div>
     );
 }

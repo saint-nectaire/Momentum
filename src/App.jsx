@@ -4,10 +4,28 @@ import Aboutpage from './pages/Aboutpage';
 import Errorpage from './pages/Errorpage';
 import Footer from './components/Footer';
 import { Container, Box, Typography, CssBaseline } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#998FC7", // Indigo
+    },
+    background: {
+      default: "#28262C", // Light Black
+      paper: "#998FC7",  // Indigo
+    },
+  },
+  typography: {
+    h1: {
+      color: "#998FC7", // Indigo
+    },
+  },
+});
 
 function App() {
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <CssBaseline /> 
       <Container
         component="main"
@@ -15,12 +33,12 @@ function App() {
         sx={{ 
           display: 'flex', 
           flexDirection: 'column', 
-          minHeight: '100vh', 
+          minHeight: '100vh',
         }}
       >
-          <Typography variant="h1" component="h1">
-            Saint-nectaire
-          </Typography>
+        <Typography variant="h1" component="h1">
+          Saint-nectaire
+        </Typography>
 
         <Box
           component="main"
@@ -28,7 +46,8 @@ function App() {
             flex: 1, 
             display: 'flex', 
             justifyContent: 'center', 
-            alignItems: 'center' 
+            alignItems: 'center',
+            bgcolor: 'background.paper', 
           }}
         >
           <Routes>
@@ -40,7 +59,7 @@ function App() {
 
         <Footer />
       </Container>
-    </>
+    </ThemeProvider>
   );
 }
 

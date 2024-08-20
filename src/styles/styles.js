@@ -3,17 +3,11 @@ export const containerStyles = {
     flexDirection: 'column',
     minHeight: '100vh',
     flex: '1 1 100vh',
-
-  };
-  
-  export const mainBoxStyles = {
-    flex: 1,
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    bgcolor: 'background.paper',
+
   };
-  
+
   export const footerStyles = {
     display: 'flex',
     justifyContent: 'center',
@@ -24,6 +18,7 @@ export const containerStyles = {
     width: '100%',
     bgcolor: 'background.default',
     p: 2,
+    zIndex: theme => theme.zIndex.drawer + 1,
   };
 
   export const paperStyles = {
@@ -57,7 +52,7 @@ export const containerStyles = {
   
   export const toolBarStyles = { 
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center'
   }
 
@@ -67,3 +62,4 @@ export const containerStyles = {
     justifyContent: 'center',
     alignItems: 'center'
   }
+

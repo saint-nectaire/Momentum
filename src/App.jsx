@@ -4,26 +4,12 @@ import Aboutpage from './pages/Aboutpage';
 import Errorpage from './pages/Errorpage';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
-import { Container, Box, CssBaseline } from '@mui/material';
+import Sidebar from './components/Sidebar';
+import { Container, CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { containerStyles, mainBoxStyles } from './styles/styles';
+import { containerStyles } from './styles/styles';
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#998FC7", // Indigo
-    },
-    background: {
-      default: "#28262C", // Light Black
-      paper: "#998FC7",  // Indigo
-    },
-  },
-  typography: {
-    h1: {
-      color: "#998FC7", // Indigo
-    },
-  },
-});
+const theme = createTheme({});
 
 function App() {
   return (
@@ -34,16 +20,12 @@ function App() {
         component="main"
         sx={containerStyles}
       >
-        <Box
-          component="main"
-          sx={mainBoxStyles}
-        >
+        <Sidebar />
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/about" element={<Aboutpage />} />
             <Route path="/*" element={<Errorpage />} />
           </Routes>
-        </Box>
       </Container>
       <Footer />
     </ThemeProvider>

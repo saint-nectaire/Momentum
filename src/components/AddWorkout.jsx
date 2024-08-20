@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, Divider, IconButton, Paper, TextField, Typography } from "@mui/material";
-import { paperStyles, exercisePaperStyles, buttonContainer } from "../styles/styles";
+import { paperStyles, exercisePaperStyles, buttonContainer, addworkoutButton } from "../styles/styles";
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import { BACKEND_API, NINJA_API, NINJA_KEY } from "../config/api";
@@ -117,51 +117,56 @@ function AddWorkout() {
                         >
                             {exercise.name}
 
+                            <Box>
+                                <Typography display={'inline'}>Sets:</Typography>
+                                <IconButton onClick={() => {
+                                    let newWorkout = [...workout];
+                                    if(newWorkout[i].sets > 0) {
+                                        newWorkout[i].sets -= 1;
+                                    }
+                                    setWorkout(newWorkout);
+                                }}>
+                                    <RemoveIcon />
+                                </IconButton>
 
-                            <IconButton onClick={() => {
-                                let newWorkout = [...workout];
-                                if(newWorkout[i].sets > 0) {
-                                    newWorkout[i].sets -= 1;
-                                }
-                                setWorkout(newWorkout);
-                            }}>
-                                <RemoveIcon />
-                            </IconButton>
-
-                            {workout[i].sets}
-                            
-                            <IconButton onClick={() => {
-                                let newWorkout = [...workout];
-                                if(newWorkout[i].sets > 0) {
-                                    newWorkout[i].sets += 1;
-                                }
-                                setWorkout(newWorkout);
-                            }}>
-                                <AddIcon />
-                            </IconButton>
+                                {workout[i].sets}
+                                
+                                <IconButton onClick={() => {
+                                    let newWorkout = [...workout];
+                                    if(newWorkout[i].sets > 0) {
+                                        newWorkout[i].sets += 1;
+                                    }
+                                    setWorkout(newWorkout);
+                                }}>
+                                    <AddIcon />
+                                </IconButton>
+                            </Box>
 
 
-                            <IconButton onClick={() => {
-                                let newWorkout = [...workout];
-                                if(newWorkout[i].reps > 0) {
-                                    newWorkout[i].reps -= 1;
-                                }
-                                setWorkout(newWorkout);
-                            }}>
-                                <RemoveIcon />
-                            </IconButton>
-                            
-                            {workout[i].reps}
-                            
-                            <IconButton onClick={() => {
-                                let newWorkout = [...workout];
-                                if(newWorkout[i].reps > 0) {
-                                    newWorkout[i].reps += 1;
-                                }
-                                setWorkout(newWorkout);
-                            }}>
-                                <AddIcon />
-                            </IconButton>
+                            <Box>
+                                <Typography display={'inline'}>Reps:</Typography>
+                                <IconButton onClick={() => {
+                                    let newWorkout = [...workout];
+                                    if(newWorkout[i].reps > 0) {
+                                        newWorkout[i].reps -= 1;
+                                    }
+                                    setWorkout(newWorkout);
+                                }}>
+                                    <RemoveIcon />
+                                </IconButton>
+                                
+                                {workout[i].reps}
+                                
+                                <IconButton onClick={() => {
+                                    let newWorkout = [...workout];
+                                    if(newWorkout[i].reps > 0) {
+                                        newWorkout[i].reps += 1;
+                                    }
+                                    setWorkout(newWorkout);
+                                }}>
+                                    <AddIcon />
+                                </IconButton>
+                            </Box>
                         </Paper>
                 )
             })} 
@@ -172,7 +177,13 @@ function AddWorkout() {
             </Paper>
 
 
-            <Button onClick={handleSaveWorkout} variant="contained">Save Workout Plan</Button>
+            <Button 
+                onClick={handleSaveWorkout} 
+                variant="contained"
+                sx={addworkoutButton}
+            >
+                Save Workout Plan
+            </Button>
 
             <CreateDialog
                 open={dialogOpen}

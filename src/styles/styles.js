@@ -71,3 +71,16 @@ export const containerStyles = {
     width: 'auto'
   }
 
+  export const workoutOverviewCard = {
+    display: 'flex',
+    margin: "20px",
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '20rem',
+    height: '15rem',
+    flexDirection: 'column'
+  }
+
+  export const addworkoutButton = {
+    marginBottom: "200px"
+  }

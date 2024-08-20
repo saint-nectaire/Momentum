@@ -3,6 +3,7 @@ import CreateExerciseForm from '../components/CreateExerciseForm';
 import CreateDialog from '../components/CreateDialog';
 import AddWorkout from '../components/AddWorkout';
 import { Box, Typography, Container, Button } from '@mui/material';
+import WorkoutOverview from '../components/WorkoutOverview';
 
 function Homepage() {
     const [openDialog, setOpenDialog] = useState(false);
@@ -42,7 +43,9 @@ function Homepage() {
                 <CreateExerciseForm />
             </CreateDialog>
 
-            <AddWorkout/>
+            <WorkoutOverview />
+            <AddWorkout />
+            
         </Container>
     );
 }

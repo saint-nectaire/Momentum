@@ -1,7 +1,7 @@
 import { Box, Button, Paper, Stack, Step, StepButton, Stepper, Typography } from "@mui/material"
 import axios from "axios"
 import React, { useEffect, useState } from "react"
-import { FAKE_API } from "../config/api"
+import { BACKEND_API } from "../config/api"
 import { workoutDetailTitleCard } from "../styles/styles";
 import { useParams } from "react-router-dom";
 
@@ -60,7 +60,7 @@ export default function WorkoutDetailsPage() {
 
 
     useEffect(() => {
-        axios.get(FAKE_API + 'workoutplans')
+        axios.get(BACKEND_API + 'workoutplans')
         .then((response) => {
             response.data.forEach((workout, i) => {
                 if(workout.id == workoutId){

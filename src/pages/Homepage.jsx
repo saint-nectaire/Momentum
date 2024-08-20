@@ -1,4 +1,5 @@
 import AddWorkout from '../components/AddWorkout';
+import WorkoutDetailsPage from './WorkoutDetailsPage'
 import { Box, Typography, Container } from '@mui/material';
 
 function Homepage() {
@@ -13,7 +14,8 @@ function Homepage() {
                 </Typography>
             </Box>
 
-            <AddWorkout />
+            <WorkoutDetailsPage />
+            <AddWorkout></AddWorkout>
         </Container>
     );
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from 'axios';
-import { Box, TextField, Button, Typography } from '@mui/material';
+import { Box, TextField, Button } from '@mui/material';
 import { FAKE_API } from '../config/api';
 import { typeValueOptions, muscleValueOptions, difficultyValueOptions } from '../utils/utils';
 import InputField from "./InputField";
@@ -36,8 +36,6 @@ function CreateExerciseForm() {
 
     return (
         <Box component="form" onSubmit={handleSubmit}>
-            <Typography variant="h5" gutterBottom>Create a New Exercise</Typography>
-            
             <TextField
                 label="Name"
                 name="name"

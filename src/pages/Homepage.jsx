@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import CreateExerciseForm from '../components/CreateExerciseForm';
+import CreateDialog from '../components/CreateDialog';
 import AddWorkout from '../components/AddWorkout';
-import CreateExerciseDialog from '../components/CreateExerciseDialog';
 import { Box, Typography, Container, Button } from '@mui/material';
 
 function Homepage() {
@@ -33,12 +34,15 @@ function Homepage() {
                 </Button>
             </Box>
 
-            <AddWorkout />
+            <CreateDialog
+                open={openDialog}
+                onClose={handleCloseDialog}
+                title="Create New Exercise"
+            >
+                <CreateExerciseForm />
+            </CreateDialog>
 
-            <CreateExerciseDialog 
-                open={openDialog} 
-                onClose={handleCloseDialog} 
-            />
+            <AddWorkout/>
         </Container>
     );
 }

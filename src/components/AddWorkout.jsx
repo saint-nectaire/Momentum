@@ -1,13 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, Divider, IconButton, Paper, TextField, Typography } from "@mui/material";
-import { closeButton, paperStyles, exercisePaperStyles, buttonContainer } from "../styles/styles";
+import { paperStyles, exercisePaperStyles, buttonContainer } from "../styles/styles";
 import AddIcon from '@mui/icons-material/Add';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import { FAKE_API, NINJA_API, NINJA_KEY } from "../config/api";
 import EditIcon from '@mui/icons-material/Edit';
@@ -15,6 +10,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { typeValueOptions, muscleValueOptions, difficultyValueOptions } from '../utils/utils';
 import InputField from "./InputField";
+import CreateDialog from "./CreateDialog";
 
 
 function AddWorkout() {
@@ -167,87 +163,57 @@ function AddWorkout() {
 
             <Button onClick={handleSaveWorkout} variant="contained">Save Workout Plan</Button>
 
-            <Dialog
-                onClose={handleClickClose}
+            <CreateDialog
                 open={dialogOpen}
-                maxWidth="md"
-                fullWidth
+                onClose={handleClickClose}
+                title="Choose an Exercise"
+                actions={<Button variant="contained" autoFocus onClick={handleClickClose}>Save Changes</Button>}
             >
-                <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                    Choose an exercise
-                </DialogTitle>
-                <IconButton
-                    aria-label="close"
-                    onClick={handleClickClose}
-                    sx={closeButton}
-                >
-                    <CloseIcon />
-                </IconButton>
-
-                <DialogContent dividers>
-                    <Box sx={buttonContainer}>
-                        <InputField
-                            label="Muscle"
-                            name="muscle"
-                            value={muscle}
-                            onChange={handleChangeMuscle}
-                            options={muscleValueOptions}
-                        />
-
-                        <InputField
-                            label="Exercise Type"
-                            name="exerciseType"
-                            value={exerciseType}
-                            onChange={handleChangeType}
-                            options={typeValueOptions}
-                        />
-                            <InputField
-                            label="Difficulty"
-                            name="difficulty"
-                            value={difficulty}
-                            onChange={handleChangeDifficulty}
-                            options={difficultyValueOptions}
-                        />
-                    </Box>
-
-                    <Divider />
-
-                    {exercises.map((exercise, i) => {
-                        return(
-                            <Paper 
-                                key={i} 
-                                sx={exercisePaperStyles} 
-                                elevation={10} 
-                                square={false}
-                            >
-                                {exercise.name}
-
-                                <IconButton onClick={() => {
-                                    let newExercise = {...exercise}
-                                    newExercise.id = workout.length + 1;
-                                    newExercise.sets = 5;
-                                    newExercise.reps = 10;
-                                    setWorkout([...workout, newExercise])
-                                    }}
-                                ><AddIcon /></IconButton>
-                            </Paper>
-                        )
-
-                    })}
-
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="contained" autoFocus onClick={handleClickClose}>
-                        Save changes
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
-
-
-
-
-        </>
+                <Box sx={buttonContainer}>
+                    <InputField
+                        label="Muscle"
+                        name="muscle"
+                        value={muscle}
+                        onChange={handleChangeMuscle}
+                        options={muscleValueOptions}
+                    />
+                    <InputField
+                        label="Exercise Type"
+                        name="exerciseType"
+                        value={exerciseType}
+                        onChange={handleChangeType}
+                        options={typeValueOptions}
+                    />
+                    <InputField
+                        label="Difficulty"
+                        name="difficulty"
+                        value={difficulty}
+                        onChange={handleChangeDifficulty}
+                        options={difficultyValueOptions}
+                    />
+                </Box>
+                <Divider />
+                {exercises.map((exercise, i) => (
+                    <Paper
+                        key={i}
+                        sx={exercisePaperStyles}
+                        elevation={10}
+                        square={false}
+                    >
+                        {exercise.name}
+                        <IconButton onClick={() => {
+                            let newExercise = { ...exercise };
+                            newExercise.id = workout.length + 1;
+                            newExercise.sets = 5;
+                            newExercise.reps = 10;
+                            setWorkout([...workout, newExercise]);
+                        }}>
+                        <AddIcon />
+                        </IconButton>
+                    </Paper>
+                ))}
+            </CreateDialog>
+    </>
     );
 }
 

@@ -13,6 +13,7 @@ function CustomExercisesPage() {
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedExercise, setSelectedExercise] = useState(null);
     const [isCreating, setIsCreating] = useState(false);
+    const [refreshTrigger, setRefreshTrigger] = useState(false);
 
     useEffect(() => {
         axios.get(`${BACKEND_API}/exercises`)
@@ -22,7 +23,7 @@ function CustomExercisesPage() {
             .catch(error => {
                 console.error('Error getting exercises:', error);
             });
-    }, []);
+    }, [refreshTrigger]);
 
     const handleOpenDialog = (exercise = null, isCreating = false) => {
         setSelectedExercise(exercise);
@@ -32,6 +33,11 @@ function CustomExercisesPage() {
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
+    };
+
+    const handleCreateSuccess = () => {
+        handleCloseDialog();
+        setRefreshTrigger(prev => !prev); // Trigger data refresh
     };
 
     return (
@@ -54,7 +60,7 @@ function CustomExercisesPage() {
                 title={isCreating ? "Create New Exercise" : "Exercise Details"}
             >
                 {isCreating ? (
-                    <CreateExerciseForm />
+                    <CreateExerciseForm onSuccess={handleCreateSuccess} />
                 ) : (
                     <ExerciseDetails exercise={selectedExercise} />
                 )}

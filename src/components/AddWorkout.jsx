@@ -39,11 +39,22 @@ function AddWorkout() {
     
         const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
 
-        axios.get(NINJA_API + queryString, {headers: { 'X-Api-Key': NINJA_KEY }})
-        .then((response) => {
-            setExercises([...response.data])
-        })
-        .catch((error) => {console.log(error)})
+        const ninjaRequest = axios.get(NINJA_API + queryString, { headers: { 'X-Api-Key': NINJA_KEY } });
+        const backendRequest = axios.get(BACKEND_API + '/exercises');
+
+        Promise.all([ninjaRequest, backendRequest])
+            .then(([ninjaResponse, backendResponse]) => {
+                const ninjaNames = ninjaResponse.data.map(exercise => exercise.name);
+                const filteredBackendData = backendResponse.data.filter(exercise => !ninjaNames.includes(exercise.name));
+
+                setExercises([
+                    ...ninjaResponse.data,
+                    ...filteredBackendData
+                ]);
+            })
+            .catch((error) => {console.log(error)})
+
+
     }, [muscle, exerciseType, difficulty])
 
     const handleClickOpen = () => {

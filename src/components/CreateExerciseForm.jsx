@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from 'axios';
 import { Box, TextField, Button } from '@mui/material';
-import { FAKE_API } from '../config/api';
+import { BACKEND_API } from '../config/api';
 import { typeValueOptions, muscleValueOptions, difficultyValueOptions } from '../utils/utils';
 import InputField from "./InputField";
 
@@ -25,7 +25,7 @@ function CreateExerciseForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post(FAKE_API + '/exercises', exercise)
+        axios.post(BACKEND_API + '/exercises', exercise)
             .then(response => {
                 console.log('Exercise created:', response.data);
             })

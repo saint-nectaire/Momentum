@@ -4,7 +4,7 @@ import { Box, Divider, IconButton, Paper, TextField, Typography } from "@mui/mat
 import { paperStyles, exercisePaperStyles, buttonContainer } from "../styles/styles";
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
-import { FAKE_API, NINJA_API, NINJA_KEY } from "../config/api";
+import { BACKEND_API, NINJA_API, NINJA_KEY } from "../config/api";
 import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -39,11 +39,22 @@ function AddWorkout() {
     
         const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
 
-        axios.get(NINJA_API + queryString, {headers: { 'X-Api-Key': NINJA_KEY }})
-        .then((response) => {
-            setExercises([...response.data])
-        })
-        .catch((error) => {console.log(error)})
+        const ninjaRequest = axios.get(NINJA_API + queryString, { headers: { 'X-Api-Key': NINJA_KEY } });
+        const backendRequest = axios.get(BACKEND_API + '/exercises');
+
+        Promise.all([ninjaRequest, backendRequest])
+            .then(([ninjaResponse, backendResponse]) => {
+                const ninjaNames = ninjaResponse.data.map(exercise => exercise.name);
+                const filteredBackendData = backendResponse.data.filter(exercise => !ninjaNames.includes(exercise.name));
+
+                setExercises([
+                    ...ninjaResponse.data,
+                    ...filteredBackendData
+                ]);
+            })
+            .catch((error) => {console.log(error)})
+
+
     }, [muscle, exerciseType, difficulty])
 
     const handleClickOpen = () => {
@@ -67,14 +78,14 @@ function AddWorkout() {
     }
     
     const handleSaveWorkout = () => {
-        let newId = axios.get(FAKE_API + '/workoutplans').length + 1;
+        let newId = axios.get(BACKEND_API + '/workoutplans').length + 1;
         let newWorkout = {
             id: newId,
             name: workoutName,
             exercises: workout
         }
         
-        axios.post(FAKE_API + '/workoutplans', newWorkout)
+        axios.post(BACKEND_API + '/workoutplans', newWorkout)
     }
     
     const handleChangeName = () => {

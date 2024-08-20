@@ -1,4 +1,4 @@
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, Divider, FormControl, IconButton, InputLabel, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
 import { closeButton, paperStyles, exercisePaperStyles, buttonContainer } from "../styles/styles";

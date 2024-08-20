@@ -25,7 +25,6 @@ export const containerStyles = {
     bgcolor: 'background.default',
     p: 2,
   };
-  
 
   export const paperStyles = {
     display: 'flex',
@@ -41,7 +40,7 @@ export const containerStyles = {
     width: '100%',
     justifyContent: 'space-between',
     padding: '5px',
-    margin: '2px',
+    marginTop: '2px',
     alignItems: 'center'
   }
 
@@ -59,5 +58,12 @@ export const containerStyles = {
   export const toolBarStyles = { 
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center'
+  }
+
+  export const buttonContainer = {
+    display: 'flex',
+    marginBottom: '10px',
+    justifyContent: 'center',
     alignItems: 'center'
   }

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Container, Typography, List, ListItem, Button, ListItemText} from '@mui/material';
+import { Container, Button, List, ListItem, ListItemText } from '@mui/material';
 import { BACKEND_API } from "../config/api";
 import CreateExerciseForm from '../components/CreateExerciseForm';
 import CreateDialog from '../components/CreateDialog';
+import PageHeader from '../components/PageHeader';
 
 function CustomExercisesPage() {
     const [exercises, setExercises] = useState([]);
@@ -29,18 +30,19 @@ function CustomExercisesPage() {
 
     return (
         <Container component="main">
-            <Typography variant="h1" gutterBottom>
-                Exercises
-            </Typography>
+            <PageHeader
+                title="Exercises"
+                subtitle="Add and manage your custom exercises."
+            />
             <Button 
-                    variant="contained" 
-                    color="primary" 
-                    onClick={handleOpenDialog} 
-                    sx={{ mt: 2 }}
-                >
-                    Create New Exercise
-                </Button>
-                <CreateDialog
+                variant="contained" 
+                color="primary" 
+                onClick={handleOpenDialog} 
+                sx={{ mt: 2 }}
+            >
+                Create New Exercise
+            </Button>
+            <CreateDialog
                 open={openDialog}
                 onClose={handleCloseDialog}
                 title="Create New Exercise"

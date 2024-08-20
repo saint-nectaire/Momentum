@@ -1,8 +1,14 @@
+import { Container } from '@mui/material';
+import PageHeader from '../components/PageHeader';
+
 function Aboutpage() {
     return (
-        <div>
-            <h1>About The Project</h1>
-        </div>
+        <Container component="main">
+            <PageHeader
+                title="About The Project"
+                subtitle="Learn more about what this project is all about."
+            />
+        </Container>
     );
 }
 

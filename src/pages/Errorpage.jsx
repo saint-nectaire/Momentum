@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom';
+import { Container } from '@mui/material';
+import PageHeader from '../components/PageHeader';
 
 function ErrorPage() {
     return (
-        <div>
-            <h1>404 - Page Not Found</h1>
-            <p>Oops! The page you&apos;re looking for doesn&apos;t exist or has been moved.</p>
+        <Container component="main" sx={{ textAlign: 'center' }}>
+            <PageHeader
+                title="404 - Page Not Found"
+                subtitle="Oops! The page you're looking for doesn't exist or has been moved."
+            />
             <Link to="/">Go to Homepage</Link>
-        </div>
+        </Container>
     );
 }
 

@@ -1,20 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Divider, FormControl, IconButton, InputLabel, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
-import { closeButton, paperStyles, exercisePaperStyles, buttonContainer } from "../styles/styles";
+import { Box, Divider, IconButton, Paper, TextField, Typography } from "@mui/material";
+import { paperStyles, exercisePaperStyles, buttonContainer } from "../styles/styles";
 import AddIcon from '@mui/icons-material/Add';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
-import { FAKE_API, NINJA_API, NINJA_KEY } from "../config/api";
+import { BACKEND_API, NINJA_API, NINJA_KEY } from "../config/api";
 import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import RemoveIcon from '@mui/icons-material/Remove';
-
-
+import { typeValueOptions, muscleValueOptions, difficultyValueOptions } from '../utils/utils';
+import InputField from "./InputField";
+import CreateDialog from "./CreateDialog";
 
 
 function AddWorkout() {
@@ -43,11 +39,22 @@ function AddWorkout() {
     
         const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
 
-        axios.get(NINJA_API + queryString, {headers: { 'X-Api-Key': NINJA_KEY }})
-        .then((response) => {
-            setExercises([...response.data])
-        })
-        .catch((error) => {console.log(error)})
+        const ninjaRequest = axios.get(NINJA_API + queryString, { headers: { 'X-Api-Key': NINJA_KEY } });
+        const backendRequest = axios.get(BACKEND_API + '/exercises');
+
+        Promise.all([ninjaRequest, backendRequest])
+            .then(([ninjaResponse, backendResponse]) => {
+                const ninjaNames = ninjaResponse.data.map(exercise => exercise.name);
+                const filteredBackendData = backendResponse.data.filter(exercise => !ninjaNames.includes(exercise.name));
+
+                setExercises([
+                    ...ninjaResponse.data,
+                    ...filteredBackendData
+                ]);
+            })
+            .catch((error) => {console.log(error)})
+
+
     }, [muscle, exerciseType, difficulty])
 
     const handleClickOpen = () => {
@@ -71,14 +78,14 @@ function AddWorkout() {
     }
     
     const handleSaveWorkout = () => {
-        let newId = axios.get(FAKE_API + '/workoutplans').length + 1;
+        let newId = axios.get(BACKEND_API + '/workoutplans').length + 1;
         let newWorkout = {
             id: newId,
             name: workoutName,
             exercises: workout
         }
         
-        axios.post(FAKE_API + '/workoutplans', newWorkout)
+        axios.post(BACKEND_API + '/workoutplans', newWorkout)
     }
     
     const handleChangeName = () => {
@@ -167,124 +174,57 @@ function AddWorkout() {
 
             <Button onClick={handleSaveWorkout} variant="contained">Save Workout Plan</Button>
 
-            <Dialog
-                onClose={handleClickClose}
+            <CreateDialog
                 open={dialogOpen}
-                maxWidth="md"
-                fullWidth
+                onClose={handleClickClose}
+                title="Choose an Exercise"
+                actions={<Button variant="contained" autoFocus onClick={handleClickClose}>Save Changes</Button>}
             >
-                <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                    Choose an exercise
-                </DialogTitle>
-                <IconButton
-                    aria-label="close"
-                    onClick={handleClickClose}
-                    sx={closeButton}
-                >
-                    <CloseIcon />
-                </IconButton>
-
-                <DialogContent dividers>
-                    <Box sx={buttonContainer}>
-                        <FormControl fullWidth>
-                            <InputLabel id="muscle-select-label">Muscle</InputLabel>
-                            <Select 
-                                labelId="muscle-select-label"
-                                id="muscle-select"
-                                value={muscle}
-                                onChange={handleChangeMuscle}
-                                >
-                                    <MenuItem value={"abdominals"}>Abdominals</MenuItem>
-                                    <MenuItem value={"abductors"}>Abductors</MenuItem>
-                                    <MenuItem value={"adductors"}>Adductors</MenuItem>
-                                    <MenuItem value={"biceps"}>Biceps</MenuItem>
-                                    <MenuItem value={"calves"}>Calves</MenuItem>
-                                    <MenuItem value={"chest"}>Chest</MenuItem>
-                                    <MenuItem value={"forearms"}>Forearms</MenuItem>
-                                    <MenuItem value={"glutes"}>Glutes</MenuItem>
-                                    <MenuItem value={"hamstrings"}>Hamstrings</MenuItem>
-                                    <MenuItem value={"lats"}>Lats</MenuItem>
-                                    <MenuItem value={"lower_back"}>Lower Back</MenuItem>
-                                    <MenuItem value={"middle_back"}>Middle Back</MenuItem>
-                                    <MenuItem value={"neck"}>Neck</MenuItem>
-                                    <MenuItem value={"quadriceps"}>Quadriceps</MenuItem>
-                                    <MenuItem value={"traps"}>Traps</MenuItem>
-                                    <MenuItem value={"triceps"}>Triceps</MenuItem>
-                            </Select>
-                        </FormControl>
-
-                        <FormControl fullWidth>
-                            <InputLabel id="exercise-type-select-label">Exercise Type</InputLabel>
-                            <Select 
-                                labelId="exercise-type-select-label"
-                                id="exercise-type-select"
-                                value={exerciseType}
-                                onChange={handleChangeType}
-                                
-                                >
-                                    <MenuItem value={"cardio"}>Cardio</MenuItem>
-                                    <MenuItem value={"olympic_weightlifting"}>Olympic weightlifting</MenuItem>
-                                    <MenuItem value={"plyometrics"}>Plyometrics</MenuItem>
-                                    <MenuItem value={"powerlifting"}>Powerlifting</MenuItem>
-                                    <MenuItem value={"strength"}>Strength</MenuItem>
-                                    <MenuItem value={"stretching"}>Stretching</MenuItem>
-                                    <MenuItem value={"strongman"}>Strongman</MenuItem>
-                            </Select>
-                        </FormControl>
-
-                        <FormControl fullWidth>
-                            <InputLabel id="difficulty-select-label">Difficulty</InputLabel>
-                            <Select 
-                                labelId="difficulty-select-label"
-                                id="difficulty-select"
-                                value={difficulty}
-                                onChange={handleChangeDifficulty}
-                                >
-                                    <MenuItem value={"beginner"}>Beginner</MenuItem>
-                                    <MenuItem value={"intermediate"}>Intermediate</MenuItem>
-                                    <MenuItem value={"expert"}>Expert</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Box>
-
-                    <Divider />
-
-                    {exercises.map((exercise, i) => {
-                        return(
-                            <Paper 
-                                key={i} 
-                                sx={exercisePaperStyles} 
-                                elevation={10} 
-                                square={false}
-                            >
-                                {exercise.name}
-
-                                <IconButton onClick={() => {
-                                    let newExercise = {...exercise}
-                                    newExercise.id = workout.length + 1;
-                                    newExercise.sets = 5;
-                                    newExercise.reps = 10;
-                                    setWorkout([...workout, newExercise])
-                                    }}
-                                ><AddIcon /></IconButton>
-                            </Paper>
-                        )
-
-                    })}
-
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="contained" autoFocus onClick={handleClickClose}>
-                        Save changes
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
-
-
-
-
-        </>
+                <Box sx={buttonContainer}>
+                    <InputField
+                        label="Muscle"
+                        name="muscle"
+                        value={muscle}
+                        onChange={handleChangeMuscle}
+                        options={muscleValueOptions}
+                    />
+                    <InputField
+                        label="Exercise Type"
+                        name="exerciseType"
+                        value={exerciseType}
+                        onChange={handleChangeType}
+                        options={typeValueOptions}
+                    />
+                    <InputField
+                        label="Difficulty"
+                        name="difficulty"
+                        value={difficulty}
+                        onChange={handleChangeDifficulty}
+                        options={difficultyValueOptions}
+                    />
+                </Box>
+                <Divider />
+                {exercises.map((exercise, i) => (
+                    <Paper
+                        key={i}
+                        sx={exercisePaperStyles}
+                        elevation={10}
+                        square={false}
+                    >
+                        {exercise.name}
+                        <IconButton onClick={() => {
+                            let newExercise = { ...exercise };
+                            newExercise.id = workout.length + 1;
+                            newExercise.sets = 5;
+                            newExercise.reps = 10;
+                            setWorkout([...workout, newExercise]);
+                        }}>
+                        <AddIcon />
+                        </IconButton>
+                    </Paper>
+                ))}
+            </CreateDialog>
+    </>
     );
 }
 

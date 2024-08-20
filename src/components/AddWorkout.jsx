@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Divider, FormControl, IconButton, InputLabel, MenuItem, Paper, Select, TextField, Typography } from "@mui/material";
+import { Box, Divider, IconButton, Paper, TextField, Typography } from "@mui/material";
 import { closeButton, paperStyles, exercisePaperStyles, buttonContainer } from "../styles/styles";
 import AddIcon from '@mui/icons-material/Add';
 import Dialog from '@mui/material/Dialog';
@@ -13,8 +13,8 @@ import { FAKE_API, NINJA_API, NINJA_KEY } from "../config/api";
 import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import RemoveIcon from '@mui/icons-material/Remove';
-
-
+import { typeValueOptions, muscleValueOptions, difficultyValueOptions } from '../utils/utils';
+import InputField from "./InputField";
 
 
 function AddWorkout() {
@@ -186,65 +186,28 @@ function AddWorkout() {
 
                 <DialogContent dividers>
                     <Box sx={buttonContainer}>
-                        <FormControl fullWidth>
-                            <InputLabel id="muscle-select-label">Muscle</InputLabel>
-                            <Select 
-                                labelId="muscle-select-label"
-                                id="muscle-select"
-                                value={muscle}
-                                onChange={handleChangeMuscle}
-                                >
-                                    <MenuItem value={"abdominals"}>Abdominals</MenuItem>
-                                    <MenuItem value={"abductors"}>Abductors</MenuItem>
-                                    <MenuItem value={"adductors"}>Adductors</MenuItem>
-                                    <MenuItem value={"biceps"}>Biceps</MenuItem>
-                                    <MenuItem value={"calves"}>Calves</MenuItem>
-                                    <MenuItem value={"chest"}>Chest</MenuItem>
-                                    <MenuItem value={"forearms"}>Forearms</MenuItem>
-                                    <MenuItem value={"glutes"}>Glutes</MenuItem>
-                                    <MenuItem value={"hamstrings"}>Hamstrings</MenuItem>
-                                    <MenuItem value={"lats"}>Lats</MenuItem>
-                                    <MenuItem value={"lower_back"}>Lower Back</MenuItem>
-                                    <MenuItem value={"middle_back"}>Middle Back</MenuItem>
-                                    <MenuItem value={"neck"}>Neck</MenuItem>
-                                    <MenuItem value={"quadriceps"}>Quadriceps</MenuItem>
-                                    <MenuItem value={"traps"}>Traps</MenuItem>
-                                    <MenuItem value={"triceps"}>Triceps</MenuItem>
-                            </Select>
-                        </FormControl>
+                        <InputField
+                            label="Muscle"
+                            name="muscle"
+                            value={muscle}
+                            onChange={handleChangeMuscle}
+                            options={muscleValueOptions}
+                        />
 
-                        <FormControl fullWidth>
-                            <InputLabel id="exercise-type-select-label">Exercise Type</InputLabel>
-                            <Select 
-                                labelId="exercise-type-select-label"
-                                id="exercise-type-select"
-                                value={exerciseType}
-                                onChange={handleChangeType}
-                                
-                                >
-                                    <MenuItem value={"cardio"}>Cardio</MenuItem>
-                                    <MenuItem value={"olympic_weightlifting"}>Olympic weightlifting</MenuItem>
-                                    <MenuItem value={"plyometrics"}>Plyometrics</MenuItem>
-                                    <MenuItem value={"powerlifting"}>Powerlifting</MenuItem>
-                                    <MenuItem value={"strength"}>Strength</MenuItem>
-                                    <MenuItem value={"stretching"}>Stretching</MenuItem>
-                                    <MenuItem value={"strongman"}>Strongman</MenuItem>
-                            </Select>
-                        </FormControl>
-
-                        <FormControl fullWidth>
-                            <InputLabel id="difficulty-select-label">Difficulty</InputLabel>
-                            <Select 
-                                labelId="difficulty-select-label"
-                                id="difficulty-select"
-                                value={difficulty}
-                                onChange={handleChangeDifficulty}
-                                >
-                                    <MenuItem value={"beginner"}>Beginner</MenuItem>
-                                    <MenuItem value={"intermediate"}>Intermediate</MenuItem>
-                                    <MenuItem value={"expert"}>Expert</MenuItem>
-                            </Select>
-                        </FormControl>
+                        <InputField
+                            label="Exercise Type"
+                            name="exerciseType"
+                            value={exerciseType}
+                            onChange={handleChangeType}
+                            options={typeValueOptions}
+                        />
+                            <InputField
+                            label="Difficulty"
+                            name="difficulty"
+                            value={difficulty}
+                            onChange={handleChangeDifficulty}
+                            options={difficultyValueOptions}
+                        />
                     </Box>
 
                     <Divider />

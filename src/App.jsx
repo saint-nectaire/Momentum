@@ -29,7 +29,7 @@ function App() {
             <Route path="/workouts/:workoutId" element={<WorkoutDetailsPage />} />
             <Route path="/exercises" element={<CustomExercisesPage />} />
             <Route path="/*" element={<Errorpage />} />
-          </Routes>
+          </Routes> 
       </Container>
       <Footer />
     </ThemeProvider>

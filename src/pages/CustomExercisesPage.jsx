@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Container, Button, List, ListItem, ListItemText } from '@mui/material';
+import { Container, Button, List, ListItemButton, ListItemText } from '@mui/material';
 import { BACKEND_API } from "../config/api";
 import CreateExerciseForm from '../components/CreateExerciseForm';
 import CreateDialog from '../components/CreateDialog';
 import PageHeader from '../components/PageHeader';
+import ExerciseDetails from '../components/ExerciseDetails';
 
 function CustomExercisesPage() {
     const [exercises, setExercises] = useState([]);
     const [openDialog, setOpenDialog] = useState(false);
+    const [selectedExercise, setSelectedExercise] = useState(null);
+    const [isCreating, setIsCreating] = useState(false);
 
     useEffect(() => {
         axios.get(`${BACKEND_API}/exercises`)
@@ -20,7 +23,9 @@ function CustomExercisesPage() {
             });
     }, []);
 
-    const handleOpenDialog = () => {
+    const handleOpenDialog = (exercise = null, isCreating = false) => {
+        setSelectedExercise(exercise);
+        setIsCreating(isCreating);
         setOpenDialog(true);
     };
 
@@ -37,23 +42,29 @@ function CustomExercisesPage() {
             <Button 
                 variant="contained" 
                 color="primary" 
-                onClick={handleOpenDialog} 
-                sx={{ mt: 2 }}
+                onClick={() => handleOpenDialog(null, true)}
             >
                 Create New Exercise
             </Button>
             <CreateDialog
                 open={openDialog}
                 onClose={handleCloseDialog}
-                title="Create New Exercise"
+                title={isCreating ? "Create New Exercise" : "Exercise Details"}
             >
-                <CreateExerciseForm />
+                {isCreating ? (
+                    <CreateExerciseForm />
+                ) : (
+                    <ExerciseDetails exercise={selectedExercise} />
+                )}
             </CreateDialog>
             <List>
                 {exercises && exercises.map((exercise, index) => (
-                    <ListItem key={index}>
+                    <ListItemButton
+                        key={index}
+                        onClick={() => handleOpenDialog(exercise, false)}
+                    >
                         <ListItemText primary={exercise.name || exercise} />
-                    </ListItem>
+                    </ListItemButton>
                 ))}
             </List>
         </Container>

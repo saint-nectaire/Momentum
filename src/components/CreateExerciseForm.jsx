@@ -5,7 +5,7 @@ import { BACKEND_API } from '../config/api';
 import { typeValueOptions, muscleValueOptions, difficultyValueOptions } from '../utils/utils';
 import InputField from "./InputField";
 
-function CreateExerciseForm() {
+function CreateExerciseForm({ onSuccess }) {
     const [exercise, setExercise] = useState({
         name: '',
         type: '',
@@ -28,6 +28,7 @@ function CreateExerciseForm() {
         axios.post(BACKEND_API + '/exercises', exercise)
             .then(response => {
                 console.log('Exercise created:', response.data);
+                if (onSuccess) onSuccess(); // Call the onSuccess callback
             })
             .catch(error => {
                 console.error('Error creating exercise:', error);
@@ -90,7 +91,7 @@ function CreateExerciseForm() {
                 multiline
                 rows={4}
             />
-            <Button type="submit" variant="contained"  sx={{ mt: 2 }}>
+            <Button type="submit" variant="contained" sx={{ mt: 2 }}>
                 Create Exercise
             </Button>
         </Box>

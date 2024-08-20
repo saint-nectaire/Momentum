@@ -8,6 +8,7 @@ import Sidebar from './components/Sidebar';
 import { Container, CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { containerStyles } from './styles/styles';
+import WorkoutDetailsPage from './pages/WorkoutDetailsPage';
 
 const theme = createTheme({});
 
@@ -24,6 +25,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/about" element={<Aboutpage />} />
+            <Route path="/workouts/:workoutId" element={<WorkoutDetailsPage />} />
             <Route path="/*" element={<Errorpage />} />
           </Routes>
       </Container>

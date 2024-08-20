@@ -23,7 +23,7 @@ export const containerStyles = {
 
   export const paperStyles = {
     display: 'flex',
-    width: '90vw',
+    width: '70em',
     justifyContent: 'space-between',
     padding: '5px',
     margin: '2px',
@@ -61,5 +61,13 @@ export const containerStyles = {
     marginBottom: '10px',
     justifyContent: 'center',
     alignItems: 'center'
+  }
+
+  export const workoutDetailTitleCard = {
+    display: 'flex',
+    marginBottom: '40px',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 'auto'
   }
 

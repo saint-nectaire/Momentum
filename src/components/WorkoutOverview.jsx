@@ -1,9 +1,11 @@
-import { Box, Paper, Typography } from "@mui/material"
+import { Box, IconButton, Paper, Typography } from "@mui/material"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { BACKEND_API } from "../config/api"
-import { paperStyles, workoutOverviewCard } from "../styles/styles";
+import { inlineBoxStyle, paperStyles, workoutOverviewCard } from "../styles/styles";
 import { Link } from "react-router-dom";
+import EditIcon from '@mui/icons-material/Edit';
+
 
 
 
@@ -40,18 +42,20 @@ const [ workouts, setWorkouts ] = useState([]);
                             elevation={10} 
                             square={false}                       
                         >
-                            <Box>
+                            <Box sx={inlineBoxStyle}>
                                 <Link to={`/workouts/${i+1}`}>
                                     <Typography variant="h5">
                                         {workout.name}
                                     </Typography>
                                 </Link>
+                                <IconButton><EditIcon/></IconButton>
                             </Box>
                             <Box>
                                 <Typography variant="h6">
                                     Amount of exercises: {workout.exercises.length}
                                 </Typography>
                             </Box>
+                        
                         </Paper>
 
                     )

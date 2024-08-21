@@ -12,51 +12,54 @@ export default function WorkoutDetailsPage() {
     const { workoutId } = useParams();
     const [ activeStep, setActiveStep ] = useState(0);
     const [ completed, setCompleted ] = useState({});
+
     const steps = currentWorkout.exercises;
 
-    const totalSteps = () => {
-        return steps && steps.length;
-    };
+    const stepFunctions = {
+        totalSteps: () => {
+            return steps && steps.length;
+        },
 
-    const completedSteps = () => {
-        return Object.keys(completed).length;
-    };
+        completedSteps: () => {
+            return Object.keys(completed).length;
+        },
 
-    const isLastStep = () => {
-        return activeStep === totalSteps() - 1;
-    };
+        isLastStep: () => {
+            return activeStep === stepFunctions.totalSteps() - 1;
+        },
 
-    const allStepsCompleted = () => {
-        return completedSteps() === totalSteps();
-    };
+        allStepsCompleted: () => {
+            return stepFunctions.completedSteps() === stepFunctions.totalSteps();
+        },
 
-    const handleNext = () => {
-        const newActiveStep =
-            isLastStep() && !allStepsCompleted()
-            ? steps.findIndex((step, i) => !(i in completed))
-            : activeStep + 1;
-        setActiveStep(newActiveStep);
-    };
+        handleNext: () => {
+            const newActiveStep =
+            stepFunctions.isLastStep() && !stepFunctions.allStepsCompleted()
+                ? steps.findIndex((step, i) => !(i in completed))
+                : activeStep + 1;
+            setActiveStep(newActiveStep);
+        },
 
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
+        handleBack: () => {
+            setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        },
 
-    const handleStep = (step) => () => {
-        setActiveStep(step);
-    };
+        handleStep: (step) => () => {
+            setActiveStep(step);
+        },
 
-    const handleComplete = () => {
-        const newCompleted = completed;
-        newCompleted[activeStep] = true;
-        setCompleted(newCompleted);
-        handleNext();
-    };
+        handleComplete: () => {
+            const newCompleted = completed;
+            newCompleted[activeStep] = true;
+            setCompleted(newCompleted);
+            stepFunctions.handleNext();
+        },
 
-    const handleReset = () => {
-        setActiveStep(0);
-        setCompleted({});
-    };
+        handleReset: () => {
+            setActiveStep(0);
+            setCompleted({});
+        }
+    }
 
 
     useEffect(() => {
@@ -72,8 +75,6 @@ export default function WorkoutDetailsPage() {
             console.log("uh oh: " + error)
         })
     }, [])
-
-
 
 
     return(
@@ -94,21 +95,21 @@ export default function WorkoutDetailsPage() {
                     <Stepper nonLinear activeStep={activeStep}>
                         {steps && steps.map((label, index) => (
                             <Step key={label.id} completed={completed[index]}>
-                                <StepButton onClick={() => {handleStep(index)}}>
+                                <StepButton onClick={() => {stepFunctions.handleStep(index)}}>
                                     {label.name}
                                 </StepButton>
                             </Step>
                         ))}
                     </Stepper>
                     <div>
-                        {allStepsCompleted() ? (
+                        {stepFunctions.allStepsCompleted() ? (
                             <>
                                 <Typography sx={{ mt: 2, mb: 1 }}>
                                     You&apos;ve finished workout '{currentWorkout.name}', click RESET to start again.
                                 </Typography>
                                 <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                                     <Box sx={{ flex: '1 1 auto' }} />
-                                    <Button onClick={handleReset}>Reset</Button>
+                                    <Button onClick={stepFunctions.handleReset}>Reset</Button>
                                 </Box>
                             </>
                         ) : (
@@ -153,13 +154,13 @@ export default function WorkoutDetailsPage() {
                                     <Button
                                         color="inherit"
                                         disabled={activeStep === 0}
-                                        onClick={handleBack}
+                                        onClick={stepFunctions.handleBack}
                                         sx={{ mr: 1 }}
                                     >
                                         Back
                                     </Button>
                                     <Box sx={{ flex: '1 1 auto' }} />
-                                    <Button onClick={handleNext} sx={{ mr: 1 }}>
+                                    <Button onClick={stepFunctions.handleNext} sx={{ mr: 1 }}>
                                         Next
                                     </Button>
                                     {steps && activeStep !== steps.length &&
@@ -168,8 +169,8 @@ export default function WorkoutDetailsPage() {
                                                 Step {activeStep + 1} already completed
                                             </Typography>
                                         ) : (
-                                            <Button onClick={handleComplete}>
-                                                {completedSteps() === totalSteps() - 1
+                                            <Button onClick={stepFunctions.handleComplete}>
+                                                {stepFunctions.completedSteps() === stepFunctions.totalSteps() - 1
                                                     ? 'Finish'
                                                     : 'Complete Exercise'}
                                             </Button>

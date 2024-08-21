@@ -3,6 +3,7 @@ import axios from "axios";
 import { Container, Button, List } from '@mui/material';
 import { BACKEND_API } from "../config/api";
 import CreateExerciseForm from '../components/CreateExerciseForm';
+import UpdateExerciseForm from '../components/UpdateExerciseForm';
 import CreateDialog from '../components/CreateDialog';
 import PageHeader from '../components/PageHeader';
 import ExerciseDetails from '../components/ExerciseDetails';
@@ -13,12 +14,17 @@ function CustomExercisesPage() {
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedExercise, setSelectedExercise] = useState(null);
     const [isCreating, setIsCreating] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
     const [refreshTrigger, setRefreshTrigger] = useState(false);
 
     useEffect(() => {
         axios.get(`${BACKEND_API}/exercises`)
             .then(response => {
-                setExercises(response.data);
+                const fetchedExercises = response.data
+                setExercises(fetchedExercises);
+                if (selectedExercise) {
+                    setSelectedExercise(fetchedExercises.find(ex => ex.id === selectedExercise.id));
+                }
             })
             .catch(error => {
                 console.error('Error getting exercises:', error);
@@ -28,6 +34,7 @@ function CustomExercisesPage() {
     const handleOpenDialog = (exercise = null, isCreating = false) => {
         setSelectedExercise(exercise);
         setIsCreating(isCreating);
+        setIsEditing(false);
         setOpenDialog(true);
     };
 
@@ -38,6 +45,15 @@ function CustomExercisesPage() {
     const handleCreateSuccess = () => {
         handleCloseDialog();
         setRefreshTrigger(prev => !prev); // Trigger data refresh
+    };
+
+    const handleUpdateSuccess = () => {
+        setRefreshTrigger(prev => !prev);
+        setIsEditing(false);
+    };
+
+    const handleEdit = () => {
+        setIsEditing(true);
     };
 
     return (
@@ -57,12 +73,17 @@ function CustomExercisesPage() {
             <CreateDialog
                 open={openDialog}
                 onClose={handleCloseDialog}
-                title={isCreating ? "Create New Exercise" : "Exercise Details"}
+                title={isCreating ? "Create New Exercise" : isEditing ? "Edit Exercise" : "Exercise Details"}
             >
                 {isCreating ? (
                     <CreateExerciseForm onSuccess={handleCreateSuccess} />
+                ) : isEditing && selectedExercise ? (
+                    <UpdateExerciseForm exercise={selectedExercise} onSuccess={handleUpdateSuccess} />
                 ) : (
-                    <ExerciseDetails exercise={selectedExercise} />
+                    <ExerciseDetails 
+                        exercise={selectedExercise} 
+                        onEdit={handleEdit} 
+                    />
                 )}
             </CreateDialog>
             <List>

@@ -15,23 +15,22 @@ function CustomExercisesPage() {
     const [selectedExercise, setSelectedExercise] = useState(null);
     const [isCreating, setIsCreating] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+    const [refreshTrigger, setRefreshTrigger] = useState(false);
     const [error, setError] = useState(null);
 
-    async function getExercisesData() {
-        try {
-            const fetchedExercises = await getExercises();
-            setExercises(fetchedExercises);
-            if (selectedExercise) {
-                setSelectedExercise(fetchedExercises.find(ex => ex.id === selectedExercise.id));
-            }
-        } catch {
-            handleError('Failed to load exercises. Please try again later.');
-        }
-    }
-
     useEffect(() => {
-        getExercisesData();
-    },[]);
+        (async () => {
+            try {
+                const fetchedExercises = await getExercises();
+                setExercises(fetchedExercises);
+                if (selectedExercise) {
+                    setSelectedExercise(fetchedExercises.find(ex => ex.id === selectedExercise.id));
+                }
+            } catch {
+                handleError('Failed to load exercises. Please try again later.');
+            }
+        })();
+    }, [refreshTrigger]);
 
     const handleOpenDialog = (exercise = null, isCreating = false) => {
         setSelectedExercise(exercise);
@@ -46,11 +45,11 @@ function CustomExercisesPage() {
 
     const handleCreateSuccess = () => {
         handleCloseDialog();
-        getExercisesData()
+        setRefreshTrigger(prev => !prev); // Trigger data refresh
     };
 
     const handleUpdateSuccess = () => {
-        getExercisesData()
+        setRefreshTrigger(prev => !prev);
         setIsEditing(false);
     };
 
@@ -62,6 +61,7 @@ function CustomExercisesPage() {
         try {
             await deleteExercise(id);
             setOpenDialog(false);
+            setRefreshTrigger(prev => !prev);
         } catch {
             handleError('Failed to delete exercise. Please try again later.');
         }

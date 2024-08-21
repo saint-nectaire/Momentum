@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Container, Button, List } from '@mui/material';
 import { BACKEND_API } from "../config/api";
-import ExerciseForm from '../components/ExerciseForm';
+import CreateExerciseForm from '../components/CreateExerciseForm';
 import CreateDialog from '../components/CreateDialog';
 import PageHeader from '../components/PageHeader';
 import ExerciseDetails from '../components/ExerciseDetails';
@@ -60,7 +60,7 @@ function CustomExercisesPage() {
                 title={isCreating ? "Create New Exercise" : "Exercise Details"}
             >
                 {isCreating ? (
-                    <ExerciseForm onSuccess={handleCreateSuccess} />
+                    <CreateExerciseForm onSuccess={handleCreateSuccess} />
                 ) : (
                     <ExerciseDetails exercise={selectedExercise} />
                 )}

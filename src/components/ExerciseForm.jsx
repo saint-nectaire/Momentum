@@ -1,23 +1,18 @@
-import { useState } from "react";
-import axios from 'axios';
+import { useState, useEffect } from "react";
 import { Box, TextField, Button } from '@mui/material';
-import { BACKEND_API } from '../config/api';
-import { typeValueOptions, muscleValueOptions, difficultyValueOptions } from '../utils/utils';
 import InputField from "./InputField";
+import { typeValueOptions, muscleValueOptions, difficultyValueOptions } from '../utils/utils';
 
-function ExerciseForm({ onSuccess }) {
-    const [exercise, setExercise] = useState({
-        name: '',
-        type: '',
-        muscle: '',
-        equipment: '',
-        difficulty: '',
-        instructions: ''
-    });
+function ExerciseForm(props) {
+    const [currentExercise, setCurrentExercise] = useState(props.exercise);
+
+    useEffect(() => {
+        setCurrentExercise(props.exercise);
+    }, [props.exercise]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setExercise(prevState => ({
+        setCurrentExercise(prevState => ({
             ...prevState,
             [name]: value
         }));
@@ -25,14 +20,7 @@ function ExerciseForm({ onSuccess }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post(BACKEND_API + '/exercises', exercise)
-            .then(response => {
-                console.log('Exercise created:', response.data);
-                if (onSuccess) onSuccess(); // Call the onSuccess callback
-            })
-            .catch(error => {
-                console.error('Error creating exercise:', error);
-            });
+        props.onSubmit(currentExercise);
     };
 
     return (
@@ -40,7 +28,7 @@ function ExerciseForm({ onSuccess }) {
             <TextField
                 label="Name"
                 name="name"
-                value={exercise.name}
+                value={currentExercise.name}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
@@ -50,7 +38,7 @@ function ExerciseForm({ onSuccess }) {
                 type="select"
                 label="Type"
                 name="type"
-                value={exercise.type}
+                value={currentExercise.type}
                 onChange={handleChange}
                 options={typeValueOptions}
                 required
@@ -59,7 +47,7 @@ function ExerciseForm({ onSuccess }) {
                 type="select"
                 label="Muscle"
                 name="muscle"
-                value={exercise.muscle}
+                value={currentExercise.muscle}
                 onChange={handleChange}
                 options={muscleValueOptions}
                 required
@@ -67,7 +55,7 @@ function ExerciseForm({ onSuccess }) {
             <TextField
                 label="Equipment"
                 name="equipment"
-                value={exercise.equipment}
+                value={currentExercise.equipment}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
@@ -76,7 +64,7 @@ function ExerciseForm({ onSuccess }) {
                 type="select"
                 label="Difficulty"
                 name="difficulty"
-                value={exercise.difficulty}
+                value={currentExercise.difficulty}
                 onChange={handleChange}
                 options={difficultyValueOptions}
                 required
@@ -84,7 +72,7 @@ function ExerciseForm({ onSuccess }) {
             <TextField
                 label="Instructions"
                 name="instructions"
-                value={exercise.instructions}
+                value={currentExercise.instructions}
                 onChange={handleChange}
                 fullWidth
                 margin="normal"
@@ -92,7 +80,7 @@ function ExerciseForm({ onSuccess }) {
                 rows={4}
             />
             <Button type="submit" variant="contained" sx={{ mt: 2 }}>
-                Create Exercise
+                {props.exercise.id ? 'Update Exercise' : 'Create Exercise'}
             </Button>
         </Box>
     );

@@ -15,7 +15,7 @@ function ExerciseListItem(props) {
                 </ListItemIcon>
                 <ListItemText 
                     primary={props.exercise.name || 'Unnamed Exercise'} 
-                    secondary={props.exercise.description || 'No description available'}
+                    secondary={props.exercise.instructions || 'No instruction available'}
                 />
                 <Box>
                     <IconButton 

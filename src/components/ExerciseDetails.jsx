@@ -1,8 +1,10 @@
 import { Box, Typography, Divider, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function ExerciseDetails(props) {
     if (!props.exercise) return null;
+
 
     return (
         <Box sx={{ p: 3 }}>
@@ -12,6 +14,9 @@ function ExerciseDetails(props) {
                 </Typography>
                 <IconButton onClick={props.onEdit} color="primary">
                     <EditIcon />
+                </IconButton>
+                <IconButton onClick={() => props.onDelete(props.exercise.id)} color="secondary">
+                    <DeleteIcon />
                 </IconButton>
             </Box>
             <Typography variant="h6" color="textSecondary" gutterBottom>
@@ -32,7 +37,7 @@ function ExerciseDetails(props) {
             <Typography paragraph>
                 {props.exercise.instructions}
             </Typography>
-            <Divider sx={{ my: 2 }} />
+            <Divider />
         </Box>
     );
 };

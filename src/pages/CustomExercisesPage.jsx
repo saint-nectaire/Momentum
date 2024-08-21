@@ -56,6 +56,18 @@ function CustomExercisesPage() {
         setIsEditing(true);
     };
 
+    const handleDelete = (id) => {
+        axios.delete(`${BACKEND_API}/exercises/${id}`)
+            .then(response => {
+                console.log('Exercise deleted:', response.data);
+                setOpenDialog(false);
+                setRefreshTrigger(prev => !prev);
+            })
+            .catch(error => {
+                console.error('Error deleting exercise:', error);
+            });
+    };
+
     return (
         <Container component="main">
             <PageHeader
@@ -83,6 +95,7 @@ function CustomExercisesPage() {
                     <ExerciseDetails 
                         exercise={selectedExercise} 
                         onEdit={handleEdit} 
+                        onDelete={handleDelete}
                     />
                 )}
             </CreateDialog>
@@ -92,6 +105,7 @@ function CustomExercisesPage() {
                         key={index}
                         exercise={exercise}
                         onClick={(selected) => handleOpenDialog(selected, false)}
+                        onDelete={handleDelete} 
                     />
                 ))}
             </List>

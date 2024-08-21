@@ -4,7 +4,7 @@ import { Box, Divider, IconButton, Paper, TextField, Typography } from "@mui/mat
 import { paperStyles, exercisePaperStyles, buttonContainer, addworkoutButton } from "../styles/styles";
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
-import { BACKEND_API, NINJA_API, NINJA_KEY } from "../config/api";
+import { BACKEND_API, NINJA_API } from "../config/api";
 import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -39,7 +39,7 @@ function AddWorkout() {
     
         const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
 
-        const ninjaRequest = axios.get(NINJA_API + queryString, { headers: { 'X-Api-Key': NINJA_KEY } });
+        const ninjaRequest = axios.get(NINJA_API.url + queryString, { headers: { 'X-Api-Key': NINJA_API.key } });
         const backendRequest = axios.get(BACKEND_API + '/exercises');
 
         Promise.all([ninjaRequest, backendRequest])

@@ -11,7 +11,11 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { containerStyles } from './styles/styles';
 import WorkoutDetailsPage from './pages/WorkoutDetailsPage';
 
-const theme = createTheme({});
+const theme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 function App() {
   return (

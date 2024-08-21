@@ -1,15 +1,14 @@
 import ExerciseForm from './ExerciseForm';
 import { createExercise } from '../services/exerciseService';
 
-function CreateExerciseForm({ onSuccess }) {
+function CreateExerciseForm(props) {
     const handleCreate = async (exercise) => {
         try {
             const response = await createExercise(exercise);
             console.log('Exercise created:', response);
-            if (onSuccess) onSuccess();
-        } catch (error) {
-            // need to change to a more use friendly error handling
-            console.error('Error creating exercise:', error);
+            if (props.onSuccess) props.onSuccess();
+        } catch {
+            props.onError('Failed to create exercise');
         }
     };
 

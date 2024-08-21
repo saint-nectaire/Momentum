@@ -7,6 +7,7 @@ import CreateDialog from '../components/CreateDialog';
 import PageHeader from '../components/PageHeader';
 import ExerciseDetails from '../components/ExerciseDetails';
 import ExerciseListItem from '../components/ExerciseListItem';
+import ErrorSnackbar from '../components/ErrorSnackbar';
 
 function CustomExercisesPage() {
     const [exercises, setExercises] = useState([]);
@@ -15,6 +16,7 @@ function CustomExercisesPage() {
     const [isCreating, setIsCreating] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [refreshTrigger, setRefreshTrigger] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         (async () => {
@@ -24,13 +26,11 @@ function CustomExercisesPage() {
                 if (selectedExercise) {
                     setSelectedExercise(fetchedExercises.find(ex => ex.id === selectedExercise.id));
                 }
-            } catch (error) {
-                // need to change to a more use friendly error handling
-                console.error('Error getting exercises:', error);
+            } catch {
+                handleError('Failed to load exercises. Please try again later.');
             }
         })();
     }, [refreshTrigger]);
-    
 
     const handleOpenDialog = (exercise = null, isCreating = false) => {
         setSelectedExercise(exercise);
@@ -62,11 +62,18 @@ function CustomExercisesPage() {
             await deleteExercise(id);
             setOpenDialog(false);
             setRefreshTrigger(prev => !prev);
-        } catch (error) {
-            // need to change to a more use friendly error handling
-            console.error('Error deleting exercise:', error);
+        } catch {
+            handleError('Failed to delete exercise. Please try again later.');
         }
     };
+
+    const handleCloseSnackbar = () => {
+        setError(null);
+    };
+
+    const handleError = (errorMessage) => {
+        setError(errorMessage);
+    }
 
     return (
         <Container component="main">
@@ -88,9 +95,13 @@ function CustomExercisesPage() {
                 title={isCreating ? "Create New Exercise" : isEditing ? "Edit Exercise" : "Exercise Details"}
             >
                 {isCreating ? (
-                    <CreateExerciseForm onSuccess={handleCreateSuccess} />
+                    <CreateExerciseForm onSuccess={handleCreateSuccess} onError={handleError}/>
                 ) : isEditing && selectedExercise ? (
-                    <UpdateExerciseForm exercise={selectedExercise} onSuccess={handleUpdateSuccess} />
+                    <UpdateExerciseForm 
+                        exercise={selectedExercise} 
+                        onSuccess={handleUpdateSuccess} 
+                        onError={handleError}
+                    />
                 ) : (
                     <ExerciseDetails 
                         exercise={selectedExercise} 
@@ -109,6 +120,7 @@ function CustomExercisesPage() {
                     />
                 ))}
             </List>
+            <ErrorSnackbar error={error} onClose={handleCloseSnackbar} />
         </Container>
     );
 }

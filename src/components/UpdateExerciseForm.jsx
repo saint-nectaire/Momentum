@@ -1,20 +1,19 @@
 import ExerciseForm from './ExerciseForm';
 import { updateExercise } from '../services/exerciseService';
 
-function UpdateExerciseForm({ exercise, onSuccess }) {
+function UpdateExerciseForm(props) {
     const handleUpdate = async (updatedExercise) => {
         try {
             await updateExercise(updatedExercise.id, updatedExercise);
-            if (onSuccess) onSuccess();
-        } catch (error) {
-            // need to change to a more use friendly error handling
-            console.error('Error creating exercise:', error);
+            if (props.onSuccess) props.onSuccess();
+        } catch {
+            props.onError('Failed to update exercise')
         }
     };
 
     return (
         <ExerciseForm
-            exercise={exercise}
+            exercise={props.exercise}
             onSubmit={handleUpdate}
         />
     );

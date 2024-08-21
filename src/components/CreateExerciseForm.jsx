@@ -1,22 +1,28 @@
 import ExerciseForm from './ExerciseForm';
-import axios from 'axios';
-import { BACKEND_API } from '../config/api';
+import { createExercise } from '../services/exerciseService';
 
 function CreateExerciseForm({ onSuccess }) {
-    const handleCreate = (exercise) => {
-        axios.post(`${BACKEND_API}/exercises`, exercise)
-            .then(response => {
-                console.log('Exercise created:', response.data);
-                if (onSuccess) onSuccess();
-            })
-            .catch(error => {
-                console.error('Error creating exercise:', error);
-            });
+    const handleCreate = async (exercise) => {
+        try {
+            const response = await createExercise(exercise);
+            console.log('Exercise created:', response);
+            if (onSuccess) onSuccess();
+        } catch (error) {
+            // need to change to a more use friendly error handling
+            console.error('Error creating exercise:', error);
+        }
     };
 
     return (
         <ExerciseForm
-            exercise={{}}
+            exercise={{
+                name: '',
+                type: '',
+                muscle: '',
+                equipment: '',
+                difficulty: '',
+                instructions: ''
+            }}
             onSubmit={handleCreate}
         />
     );

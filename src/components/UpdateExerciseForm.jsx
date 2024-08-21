@@ -1,17 +1,15 @@
 import ExerciseForm from './ExerciseForm';
-import axios from 'axios';
-import { BACKEND_API } from '../config/api';
+import { updateExercise } from '../services/exerciseService';
 
 function UpdateExerciseForm({ exercise, onSuccess }) {
-    const handleUpdate = (updatedExercise) => {
-        axios.put(`${BACKEND_API}/exercises/${updatedExercise.id}`, updatedExercise)
-            .then(response => {
-                console.log('Exercise updated:', response.data);
-                if (onSuccess) onSuccess();
-            })
-            .catch(error => {
-                console.error('Error updating exercise:', error);
-            });
+    const handleUpdate = async (updatedExercise) => {
+        try {
+            await updateExercise(updatedExercise.id, updatedExercise);
+            if (onSuccess) onSuccess();
+        } catch (error) {
+            // need to change to a more use friendly error handling
+            console.error('Error creating exercise:', error);
+        }
     };
 
     return (

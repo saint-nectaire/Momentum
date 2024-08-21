@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Container, Button, List } from '@mui/material';
-import { BACKEND_API } from "../config/api";
+import { getExercises, deleteExercise } from '../services/exerciseService';
 import CreateExerciseForm from '../components/CreateExerciseForm';
 import UpdateExerciseForm from '../components/UpdateExerciseForm';
 import CreateDialog from '../components/CreateDialog';
@@ -18,18 +17,20 @@ function CustomExercisesPage() {
     const [refreshTrigger, setRefreshTrigger] = useState(false);
 
     useEffect(() => {
-        axios.get(`${BACKEND_API}/exercises`)
-            .then(response => {
-                const fetchedExercises = response.data
+        (async () => {
+            try {
+                const fetchedExercises = await getExercises();
                 setExercises(fetchedExercises);
                 if (selectedExercise) {
                     setSelectedExercise(fetchedExercises.find(ex => ex.id === selectedExercise.id));
                 }
-            })
-            .catch(error => {
+            } catch (error) {
+                // need to change to a more use friendly error handling
                 console.error('Error getting exercises:', error);
-            });
+            }
+        })();
     }, [refreshTrigger]);
+    
 
     const handleOpenDialog = (exercise = null, isCreating = false) => {
         setSelectedExercise(exercise);
@@ -56,16 +57,15 @@ function CustomExercisesPage() {
         setIsEditing(true);
     };
 
-    const handleDelete = (id) => {
-        axios.delete(`${BACKEND_API}/exercises/${id}`)
-            .then(response => {
-                console.log('Exercise deleted:', response.data);
-                setOpenDialog(false);
-                setRefreshTrigger(prev => !prev);
-            })
-            .catch(error => {
-                console.error('Error deleting exercise:', error);
-            });
+    const handleDelete = async (id) => {
+        try {
+            await deleteExercise(id);
+            setOpenDialog(false);
+            setRefreshTrigger(prev => !prev);
+        } catch (error) {
+            // need to change to a more use friendly error handling
+            console.error('Error deleting exercise:', error);
+        }
     };
 
     return (

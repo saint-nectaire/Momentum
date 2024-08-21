@@ -14,6 +14,7 @@ const [ workouts, setWorkouts ] = useState([]);
         axios.get(BACKEND_API + 'workoutplans')
         .then((response) => {
             setWorkouts(response.data)
+            console.log(response.data)
         })
         .catch((error) => {
             console.log("uh oh: " + error)
@@ -49,7 +50,7 @@ const [ workouts, setWorkouts ] = useState([]);
                             </Box>
                             <Box>
                                 <Typography variant="h6">
-                                    Amount of exercises: {workout.exercises.length}
+                                    Amount of exercises: {workout.exercises?.length || 0}
                                 </Typography>
                             </Box>
                         </Paper>

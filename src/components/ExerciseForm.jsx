@@ -5,7 +5,7 @@ import { BACKEND_API } from '../config/api';
 import { typeValueOptions, muscleValueOptions, difficultyValueOptions } from '../utils/utils';
 import InputField from "./InputField";
 
-function CreateExerciseForm({ onSuccess }) {
+function ExerciseForm({ onSuccess }) {
     const [exercise, setExercise] = useState({
         name: '',
         type: '',
@@ -98,4 +98,4 @@ function CreateExerciseForm({ onSuccess }) {
     );
 }
 
-export default CreateExerciseForm;
+export default ExerciseForm;

@@ -3,12 +3,15 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { BACKEND_API } from "../config/api"
 import { inlineBoxStyle, workoutOverviewCard } from "../styles/styles";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import Link from "@mui/material/Link";
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import AddWorkout from "../components/AddWorkout";
 import UpdateWorkout from "../components/UpdateWorkout";
 import PageHeader from '../components/PageHeader';
+import { deleteWorkout } from "../services/workoutService";
 
 
 export default function WorkoutOverviewPage() {
@@ -21,7 +24,6 @@ const [ editingWorkout, setEditingWorkout ] = useState({});
         axios.get(BACKEND_API + 'workoutplans')
         .then((response) => {
             setWorkouts(response.data)
-            console.log(response.data)
         })
         .catch((error) => {
             console.log("uh oh: " + error)
@@ -46,7 +48,7 @@ const [ editingWorkout, setEditingWorkout ] = useState({});
                 title="Workout Overview"
             />
 
-            <Box sx={{flexWrap : "wrap", display: "flex"}}>
+            <Box sx={{flexWrap : "wrap", display: "flex", justifyContent: 'center', marginBottom:'40px'}}>
                 {workouts && workouts.map((workout, i) => {
                     return(
                         <Paper
@@ -56,12 +58,20 @@ const [ editingWorkout, setEditingWorkout ] = useState({});
                             square={false}                       
                         >
                             <Box sx={inlineBoxStyle}>
-                                <Link to={`/workouts/${i+1}`}>
-                                    <Typography color="primary" variant="h5">
+                                <Link 
+                                    underline="none"
+                                    to={`/workouts/${i+1}`}
+                                    component={RouterLink}
+                                    sx={{minWidth:'200px', display:'flex', justifyContent:'center'}}
+                                >
+                                    <Typography sx={{textAlign:'left'}} color="primary" variant="h5">
                                         {workout.name}
                                     </Typography>
                                 </Link>
                                 <IconButton onClick={() => {handleEdit(workout)}}><EditIcon/></IconButton>
+                                <IconButton onClick={() => deleteWorkout(workout.id)} color="secondary">
+                                    <DeleteIcon />
+                                </IconButton>
                             </Box>
                             <Box>
                                 <Typography variant="h6">

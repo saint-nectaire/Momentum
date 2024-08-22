@@ -25,7 +25,7 @@ export default function UpdateWorkout({editingWorkout, setIsEditingWorkout}) {
     const [exerciseType, setExerciseType] = useState('');
     const [difficulty, setDifficulty] = useState('');
     const [workoutName, setWorkoutName] = useState('');
-    const [editingName, setEditingName] = useState(true);
+    const [editingName, setEditingName] = useState(false);
 
     useEffect(() => {    
         let thisWorkout = structuredClone(editingWorkout);
@@ -111,7 +111,7 @@ export default function UpdateWorkout({editingWorkout, setIsEditingWorkout}) {
         <>
             <Box sx={buttonContainer}>
             {editingName ? 
-                <><TextField autoFocus onChange={(v) => {setWorkoutName(v.target.value)}} fullWidth label="Workout Name" id="workoutName"/> <IconButton onClick={handleChangeName}><CheckIcon /></IconButton></> : 
+                <><TextField sx={{width:'320px'}} autoFocus onChange={(v) => {setWorkoutName(v.target.value)}} fullWidth label="Workout Name" id="workoutName"/> <IconButton onClick={handleChangeName}><CheckIcon /></IconButton></> : 
                 <><Typography>{workoutName}</Typography> <IconButton onClick={handleChangeName}><EditIcon /></IconButton></>}
             </Box>
 
@@ -120,7 +120,7 @@ export default function UpdateWorkout({editingWorkout, setIsEditingWorkout}) {
                 return(
                         <Paper 
                             key={i} 
-                            sx={paperStyles} 
+                            sx={exercisePaperStyles} 
                             elevation={10} 
                             square={false}
                         >
@@ -181,19 +181,29 @@ export default function UpdateWorkout({editingWorkout, setIsEditingWorkout}) {
             })} 
 
 
-            <Paper sx={paperStyles} elevation={10} square={false}>
+            <Paper sx={exercisePaperStyles} elevation={10} square={false}>
                 add exercise
                 <IconButton onClick={handleClickOpen}><AddIcon /></IconButton>
             </Paper>
 
 
-            <Button 
-                onClick={handleSaveWorkout} 
-                variant="contained"
-                sx={addworkoutButton}
-            >
-                Save Workout Plan
-            </Button>
+            <Box sx={buttonContainer}>
+                <Button 
+                    onClick={() => {setIsEditingWorkout(false)}} 
+                    variant="contained"
+                    sx={addworkoutButton}
+                    >
+                    Cancel
+                </Button>
+
+                <Button 
+                    onClick={handleSaveWorkout} 
+                    variant="contained"
+                    sx={addworkoutButton}
+                    >
+                    Save Workout Plan
+                </Button>
+            </Box>
 
             <CreateDialog
                 open={dialogOpen}
@@ -225,25 +235,27 @@ export default function UpdateWorkout({editingWorkout, setIsEditingWorkout}) {
                     />
                 </Box>
                 <Divider />
-                {exercises.map((exercise, i) => (
-                    <Paper
-                        key={i}
-                        sx={exercisePaperStyles}
-                        elevation={10}
-                        square={false}
-                    >
-                        {exercise.name}
-                        <IconButton onClick={() => {
-                            let newExercise = { ...exercise };
-                            newExercise.id = workout.length + 1;
-                            newExercise.sets = 5;
-                            newExercise.reps = 10;
-                            setWorkout([...workout, newExercise]);
-                        }}>
-                        <AddIcon />
-                        </IconButton>
-                    </Paper>
-                ))}
+                <Box sx={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:'20px'}}>
+                    {exercises.map((exercise, i) => (
+                        <Paper
+                            key={i}
+                            sx={exercisePaperStyles}
+                            elevation={10}
+                            square={false}
+                        >
+                            {exercise.name}
+                            <IconButton onClick={() => {
+                                let newExercise = { ...exercise };
+                                newExercise.id = workout.length + 1;
+                                newExercise.sets = 5;
+                                newExercise.reps = 10;
+                                setWorkout([...workout, newExercise]);
+                            }}>
+                            <AddIcon />
+                            </IconButton>
+                        </Paper>
+                    ))}
+                </Box>
             </CreateDialog>
 
 

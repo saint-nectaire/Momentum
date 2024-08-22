@@ -23,23 +23,23 @@ export const containerStyles = {
     display: 'flex',
     width: '70em',
     justifyContent: 'space-between',
-    padding: '5px',
+    padding: '5px 20px',
     margin: '2px',
     alignItems: 'center'
   }
 
   export const exercisePaperStyles = {
     display: 'flex',
-    width: '100%',
+    width: '94.2029%',
     justifyContent: 'space-between',
-    padding: '5px',
+    padding: '5px 20px',
     marginTop: '2px',
     alignItems: 'center'
   }
 
   export const closeButton = {
     position: 'absolute',
-    right: 8,
+    right: 12,
     top: 8
 }
 
@@ -66,7 +66,8 @@ export const containerStyles = {
     marginBottom: '40px',
     justifyContent: 'center',
     alignItems: 'center',
-    width: 'auto'
+    width: 'auto',
+    padding: '50px'
   }
 
   export const workoutOverviewCard = {
@@ -80,11 +81,12 @@ export const containerStyles = {
   }
 
   export const addworkoutButton = {
-    marginBottom: "200px"
+    margin: '10px 3px 200px'
   }
 
   export const iconStyle = { mr: 2 }
 
   export const inlineBoxStyle = {
-    display: 'flex'
+    display: 'flex',
+    alignItems: 'center'
   }

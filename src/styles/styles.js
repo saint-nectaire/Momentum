@@ -1,12 +1,11 @@
 export const containerStyles = {
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '100vh',
-    flex: '1 1 100vh',
-    justifyContent: 'center',
-    alignItems: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+  minHeight: '100vh',
+  justifyContent: 'flex-start',
+  alignItems: 'center',
+};
 
-  };
 
   export const footerStyles = {
     display: 'flex',

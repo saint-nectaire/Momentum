@@ -3,7 +3,7 @@ import axios from "axios"
 import React, { useEffect, useState } from "react"
 import { BACKEND_API } from "../config/api"
 import { workoutDetailTitleCard } from "../styles/styles";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 
@@ -14,6 +14,7 @@ export default function WorkoutDetailsPage() {
     const [ completed, setCompleted ] = useState({});
 
     const steps = currentWorkout.exercises;
+    const navigate = useNavigate();
 
     const stepFunctions = {
         totalSteps: () => {
@@ -85,7 +86,8 @@ export default function WorkoutDetailsPage() {
                     elevation={10} 
                     square={false}
                 >
-                    {currentWorkout.name}
+                    
+                    <Typography variant="h4">{currentWorkout.name && currentWorkout.name.toUpperCase()}</Typography>
                 </Paper>
 
 
@@ -152,12 +154,11 @@ export default function WorkoutDetailsPage() {
 
                                 <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                                     <Button
-                                        color="inherit"
                                         disabled={activeStep === 0}
                                         onClick={stepFunctions.handleBack}
                                         sx={{ mr: 1 }}
                                     >
-                                        Back
+                                        Previous
                                     </Button>
                                     <Box sx={{ flex: '1 1 auto' }} />
                                     <Button onClick={stepFunctions.handleNext} sx={{ mr: 1 }}>
@@ -180,6 +181,15 @@ export default function WorkoutDetailsPage() {
                         )}
                     </div>
                 </Box>
+
+                <Button 
+                    variant="contained"
+                    onClick={() => {navigate("/workouts")}}
+                >
+                    Back to Overview
+                </Button>
+
+
             </Box>
         </>
     )

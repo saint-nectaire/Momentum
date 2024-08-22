@@ -8,8 +8,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import AddWorkout from "../components/AddWorkout";
 import UpdateWorkout from "../components/UpdateWorkout";
-
-
+import PageHeader from '../components/PageHeader';
 
 
 export default function WorkoutOverviewPage() {
@@ -43,13 +42,9 @@ const [ editingWorkout, setEditingWorkout ] = useState({});
 
     return(
         <>
-
-            <Box>
-                <Typography variant="h4" sx={{textAlign:'center'}}>
-                    Workout Overview
-                </Typography>
-            </Box>
-
+            <PageHeader
+                title="Workout Overview"
+            />
 
             <Box sx={{flexWrap : "wrap", display: "flex"}}>
                 {workouts && workouts.map((workout, i) => {

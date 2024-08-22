@@ -8,7 +8,7 @@ function Navbar() {
             <Toolbar sx={toolBarStyles}>
                 <IconButton edge="start" component={Link} to="/" sx={{ p: 0 }}>
                     <Typography 
-                        variant="h6" 
+                        variant="h5" 
                         component="div" 
                         sx={{
                             fontWeight: 'bold',

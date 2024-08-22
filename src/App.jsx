@@ -12,6 +12,7 @@ import { containerStyles } from './styles/styles';
 import WorkoutDetailsPage from './pages/WorkoutDetailsPage';
 import WorkoutOverviewPage from './pages/WorkoutOverviewPage';
 import "@fontsource/lora";
+import "@fontsource/playfair-display";
 
 
 const theme = createTheme({
@@ -19,9 +20,19 @@ const theme = createTheme({
     mode: 'dark',
   },
   typography: {
-    fontFamily: "Lora",
+    fontFamily: "lora",
+    },
+    h4: {
+      fontFamily: "Playfair Display",
+    },
+    h5: {
+      fontFamily: "Playfair Display",
+    },
+    h6: {
+      fontFamily: "Playfair Display",
+    },
   },
-});
+);
 
 function App() {
   return (

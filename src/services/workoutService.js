@@ -27,7 +27,7 @@ export const createWorkout = async (workout) => {
 export const updateWorkout = async (id, workout) => {
     try {
         const response = await axios.put(`${workoutsUrl}/${id}`, workout);
-        console.log('Workout created:', response);
+        console.log('Workout updated:', response);
         return response.data;
     } catch (error) {
         console.error('Error updating workout:', error);

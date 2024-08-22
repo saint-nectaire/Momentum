@@ -8,10 +8,12 @@ import { BACKEND_API, NINJA_API } from "../config/api";
 import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import RemoveIcon from '@mui/icons-material/Remove';
+import DeleteIcon from '@mui/icons-material/Delete'
 import { typeValueOptions, muscleValueOptions, difficultyValueOptions } from '../utils/utils';
 import InputField from "./InputField";
 import CreateDialog from "./CreateDialog";
 import { updateWorkout } from "../services/workoutService";
+import { getWorkouts } from "../services/workoutService";
 
 
 
@@ -95,6 +97,7 @@ export default function UpdateWorkout({editingWorkout, setIsEditingWorkout}) {
         }
 
         updateWorkout(newWorkout.id, newWorkout);
+        setIsEditingWorkout(false);
     }
     
     const handleChangeName = () => {
@@ -104,6 +107,17 @@ export default function UpdateWorkout({editingWorkout, setIsEditingWorkout}) {
         } else if(!editingName){
             setEditingName(true)
         }
+    }
+
+    const handleDeleteExerciseFromWorkout = (id) => {
+        console.log(id)
+        let newWorkout = {
+            id: editingWorkout.id,
+            name: workoutName,
+            exercises: workout.filter(exercise => exercise.id != id)
+        }
+        setWorkout(workout.filter(exercise => exercise.id != id))
+        updateWorkout(newWorkout.id, newWorkout)
     }
 
 
@@ -176,6 +190,10 @@ export default function UpdateWorkout({editingWorkout, setIsEditingWorkout}) {
                                     <AddIcon />
                                 </IconButton>
                             </Box>
+
+                            <IconButton onClick={() => {handleDeleteExerciseFromWorkout(exercise.id)}} color="secondary">
+                                <DeleteIcon />
+                            </IconButton>
                         </Paper>
                 )
             })} 

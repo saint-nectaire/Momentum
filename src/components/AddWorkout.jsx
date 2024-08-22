@@ -86,6 +86,7 @@ function AddWorkout({setIsAddingWorkout}) {
         }
         
         createWorkout(newWorkout);
+        setIsAddingWorkout(false);
     }
     
     const handleChangeName = () => {

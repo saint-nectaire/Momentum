@@ -81,7 +81,7 @@ function AddWorkout({setIsAddingWorkout, onSuccess}) {
         }
     };
     
-    const handleSaveWorkout = () => {
+    const handleSaveWorkout = async () => {
         let newWorkout = {
             name: workoutName,
             exercises: workout

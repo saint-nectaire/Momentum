@@ -14,23 +14,25 @@ import { deleteWorkout } from "../services/workoutService";
 import PageHeader from "../components/PageHeader";
 
 
-
-
 export default function WorkoutOverviewPage() {
 const [ workouts, setWorkouts ] = useState([]);
 const [ isAddingWorkout, setIsAddingWorkout ] = useState(false);
 const [ isEditingWorkout, setIsEditingWorkout ] = useState(false);
 const [ editingWorkout, setEditingWorkout ] = useState({});
 
+const fetchWorkoutPlans= () => {
+    axios.get(BACKEND_API + 'workoutplans')
+    .then((response) => {
+        setWorkouts(response.data)
+    })
+    .catch((error) => {
+        console.log("uh oh: " + error)
+    })
+}
+
     useEffect(() => {
-        axios.get(BACKEND_API + 'workoutplans')
-        .then((response) => {
-            setWorkouts(response.data)
-        })
-        .catch((error) => {
-            console.log("uh oh: " + error)
-        })
-    }, [workouts])
+        fetchWorkoutPlans()
+    }, [])
 
     const handleEdit = (workout) => {
         if(isAddingWorkout){setIsAddingWorkout(false)}
@@ -42,6 +44,16 @@ const [ editingWorkout, setEditingWorkout ] = useState({});
         if(isEditingWorkout){setIsEditingWorkout(false)}
         setIsAddingWorkout(true)
     }
+
+
+    const handleDelete = async (id) => {
+        await deleteWorkout(id);
+        fetchWorkoutPlans();
+    };
+
+    const handleSuccess = () => {
+        fetchWorkoutPlans();
+    };
 
 
     return(
@@ -75,7 +87,7 @@ const [ editingWorkout, setEditingWorkout ] = useState({});
                                     <EditIcon/>
                                 </IconButton>
 
-                                <IconButton onClick={() => deleteWorkout(workout.id)} color="secondary">
+                                <IconButton onClick={() => handleDelete(workout.id)} color="secondary">
                                     <DeleteIcon />
                                 </IconButton>
                             </Box>
@@ -104,8 +116,8 @@ const [ editingWorkout, setEditingWorkout ] = useState({});
 
             </Box>
 
-            {isAddingWorkout && <AddWorkout setIsAddingWorkout={setIsAddingWorkout}/>}
-            {isEditingWorkout && <UpdateWorkout setIsEditingWorkout={setIsEditingWorkout} editingWorkout={editingWorkout}/>}
+            {isAddingWorkout && <AddWorkout setIsAddingWorkout={setIsAddingWorkout} onSuccess={handleSuccess} />}
+            {isEditingWorkout && <UpdateWorkout setIsEditingWorkout={setIsEditingWorkout} onSuccess={handleSuccess} editingWorkout={editingWorkout}/>}
 
 
 

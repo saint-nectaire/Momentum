@@ -3,15 +3,17 @@ import { BACKEND_API } from '../config/api';
 
 const exercisesUrl = `${BACKEND_API}/exercises`;
 
-export const getExercises = async () => {
+export const getExercises = async (queryParams = []) => {
     try {
-        const response = await axios.get(exercisesUrl);
+        const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
+        const response = await axios.get(`${exercisesUrl}${queryString}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching exercises:', error);
         throw error;
     }
 };
+
 
 export const createExercise = async (exercise) => {
     try {

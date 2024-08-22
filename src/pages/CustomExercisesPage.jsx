@@ -8,6 +8,7 @@ import PageHeader from '../components/PageHeader';
 import ExerciseDetails from '../components/ExerciseDetails';
 import ExerciseListItem from '../components/ExerciseListItem';
 import ErrorSnackbar from '../components/ErrorSnackbar';
+import ExercisesFilter from '../components/ExercisesFilter';
 
 function CustomExercisesPage() {
     const [exercises, setExercises] = useState([]);
@@ -17,11 +18,28 @@ function CustomExercisesPage() {
     const [isEditing, setIsEditing] = useState(false);
     const [refreshTrigger, setRefreshTrigger] = useState(false);
     const [error, setError] = useState(null);
+    const [filterOptions, setFilterOptions] = useState({
+        muscle: '',
+        type: '',
+        difficulty: ''
+    });
 
     useEffect(() => {
+        const createQueryParams = (filters) => {
+            const params = [];
+            for (const [key, value] of Object.entries(filters)) {
+                if (value) {
+                    params.push(`${key}=${encodeURIComponent(value)}`);
+                }
+            }
+            return params;
+        };
+    
+        const queryParams = createQueryParams(filterOptions);
+    
         (async () => {
             try {
-                const fetchedExercises = await getExercises();
+                const fetchedExercises = await getExercises(queryParams);
                 setExercises(fetchedExercises);
                 if (selectedExercise) {
                     setSelectedExercise(fetchedExercises.find(ex => ex.id === selectedExercise.id));
@@ -30,7 +48,8 @@ function CustomExercisesPage() {
                 handleError('Failed to load exercises. Please try again later.');
             }
         })();
-    }, [refreshTrigger]);
+    }, [refreshTrigger, filterOptions]);
+    
 
     const handleOpenDialog = (exercise = null, isCreating = false) => {
         setSelectedExercise(exercise);
@@ -73,7 +92,23 @@ function CustomExercisesPage() {
 
     const handleError = (errorMessage) => {
         setError(errorMessage);
-    }
+    };
+
+    const handleFilterChange = (e) => {
+        const { name, value } = e.target;
+        setFilterOptions(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const resetFilters = () => {
+        setFilterOptions({
+            muscle: '',
+            type: '',
+            difficulty: ''
+        });
+    };
 
     return (
         <Container component="main">
@@ -81,6 +116,14 @@ function CustomExercisesPage() {
                 title="Exercises"
                 subtitle="Add and manage your custom exercises."
             />
+            <ExercisesFilter
+                muscle={filterOptions.muscle}
+                type={filterOptions.type}
+                difficulty={filterOptions.difficulty}
+                handleFilterChange={handleFilterChange}
+                resetFilters={resetFilters}
+            />
+
             <Button 
                 variant="contained" 
                 color="primary" 
@@ -111,7 +154,7 @@ function CustomExercisesPage() {
                 )}
             </CreateDialog>
             <List>
-                {exercises && exercises.map((exercise, index) => (
+                {exercises.map((exercise, index) => (
                     <ExerciseListItem
                         key={index}
                         exercise={exercise}

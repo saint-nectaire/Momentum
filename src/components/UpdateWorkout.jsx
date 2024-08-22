@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, Divider, IconButton, Paper, TextField, Typography } from "@mui/material";
-import { exercisePaperStyles, buttonContainer, addworkoutButton } from "../styles/styles";
+import { exercisePaperStyles, buttonContainer, addworkoutButton, exerciseListBox } from "../styles/styles";
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import { BACKEND_API, NINJA_API } from "../config/api";

@@ -22,7 +22,7 @@ function AddWorkout({setIsAddingWorkout}) {
   const [exerciseType, setExerciseType] = useState('');
   const [difficulty, setDifficulty] = useState('');
   const [workoutName, setWorkoutName] = useState('New Workout');
-  const [editingName, setEditingName] = useState(false);
+  const [editingName, setEditingName] = useState(true);
 
 
     useEffect(() => {
@@ -47,7 +47,6 @@ function AddWorkout({setIsAddingWorkout}) {
             .then(([ninjaResponse, backendResponse]) => {
                 const ninjaNames = ninjaResponse.data.map(exercise => exercise.name);
                 const filteredBackendData = backendResponse.data.filter(exercise => !ninjaNames.includes(exercise.name));
-                console.log(ninjaResponse)
                 setExercises([
                     ...ninjaResponse.data,
                     ...filteredBackendData
@@ -103,94 +102,105 @@ function AddWorkout({setIsAddingWorkout}) {
         <>
             <Box sx={buttonContainer}>
             {editingName ? 
-            <><TextField autoFocus onChange={(v) => {setWorkoutName(v.target.value)}} fullWidth label="Workout Name" id="workoutName"/> <IconButton onClick={handleChangeName}><CheckIcon /></IconButton></> : 
+            <><TextField sx={{width:'320px'}} autoFocus onChange={(v) => {setWorkoutName(v.target.value)}} fullWidth label="Workout Name" id="workoutName"/> <IconButton onClick={handleChangeName}><CheckIcon /></IconButton></> : 
             <><Typography>{workoutName}</Typography> <IconButton onClick={handleChangeName}><EditIcon /></IconButton></>}
             </Box>
 
 
-            {workout && workout.map((exercise, i) => {
-                return(
-                        <Paper 
-                            key={i} 
-                            sx={paperStyles} 
-                            elevation={10} 
-                            square={false}
-                        >
-                            {exercise.name}
+            <Box sx={{display:'flex', alignItems:'center', flexDirection:'column', width:'100%'}}>
+                {workout && workout.map((exercise, i) => {
+                    return(
+                            <Paper 
+                                key={i} 
+                                sx={exercisePaperStyles} 
+                                elevation={10} 
+                                square={false}
+                            >
+                                {exercise.name}
 
-                            <Box>
-                                <Typography display={'inline'}>Sets:</Typography>
-                                <IconButton onClick={() => {
-                                    let newWorkout = [...workout];
-                                    if(newWorkout[i].sets > 0) {
-                                        newWorkout[i].sets -= 1;
-                                    }
-                                    setWorkout(newWorkout);
-                                }}>
-                                    <RemoveIcon />
-                                </IconButton>
+                                <Box>
+                                    <Typography display={'inline'}>Sets:</Typography>
+                                    <IconButton onClick={() => {
+                                        let newWorkout = [...workout];
+                                        if(newWorkout[i].sets > 0) {
+                                            newWorkout[i].sets -= 1;
+                                        }
+                                        setWorkout(newWorkout);
+                                    }}>
+                                        <RemoveIcon />
+                                    </IconButton>
 
-                                {workout[i].sets}
-                                
-                                <IconButton onClick={() => {
-                                    let newWorkout = [...workout];
-                                    if(newWorkout[i].sets > 0) {
-                                        newWorkout[i].sets += 1;
-                                    }
-                                    setWorkout(newWorkout);
-                                }}>
-                                    <AddIcon />
-                                </IconButton>
-                            </Box>
-
-
-                            <Box>
-                                <Typography display={'inline'}>Reps:</Typography>
-                                <IconButton onClick={() => {
-                                    let newWorkout = [...workout];
-                                    if(newWorkout[i].reps > 0) {
-                                        newWorkout[i].reps -= 1;
-                                    }
-                                    setWorkout(newWorkout);
-                                }}>
-                                    <RemoveIcon />
-                                </IconButton>
-                                
-                                {workout[i].reps}
-                                
-                                <IconButton onClick={() => {
-                                    let newWorkout = [...workout];
-                                    if(newWorkout[i].reps > 0) {
-                                        newWorkout[i].reps += 1;
-                                    }
-                                    setWorkout(newWorkout);
-                                }}>
-                                    <AddIcon />
-                                </IconButton>
-                            </Box>
-                        </Paper>
-                )
-            })} 
-
-            <Paper sx={paperStyles} elevation={10} square={false}>
-                add exercise
-                <IconButton onClick={handleClickOpen}><AddIcon /></IconButton>
-            </Paper>
+                                    {workout[i].sets}
+                                    
+                                    <IconButton onClick={() => {
+                                        let newWorkout = [...workout];
+                                        if(newWorkout[i].sets > 0) {
+                                            newWorkout[i].sets += 1;
+                                        }
+                                        setWorkout(newWorkout);
+                                    }}>
+                                        <AddIcon />
+                                    </IconButton>
+                                </Box>
 
 
-            <Button 
-                onClick={handleSaveWorkout} 
-                variant="contained"
-                sx={addworkoutButton}
-            >
-                Save Workout Plan
-            </Button>
+                                <Box>
+                                    <Typography display={'inline'}>Reps:</Typography>
+                                    <IconButton onClick={() => {
+                                        let newWorkout = [...workout];
+                                        if(newWorkout[i].reps > 0) {
+                                            newWorkout[i].reps -= 1;
+                                        }
+                                        setWorkout(newWorkout);
+                                    }}>
+                                        <RemoveIcon />
+                                    </IconButton>
+                                    
+                                    {workout[i].reps}
+                                    
+                                    <IconButton onClick={() => {
+                                        let newWorkout = [...workout];
+                                        if(newWorkout[i].reps > 0) {
+                                            newWorkout[i].reps += 1;
+                                        }
+                                        setWorkout(newWorkout);
+                                    }}>
+                                        <AddIcon />
+                                    </IconButton>
+                                </Box>
+                            </Paper>
+                    )
+                })} 
+
+                <Paper sx={exercisePaperStyles} elevation={10} square={false}>
+                    Add Exercise
+                    <IconButton onClick={handleClickOpen}><AddIcon /></IconButton>
+                </Paper>
+            </Box>
+
+            <Box sx={buttonContainer}>
+                <Button 
+                    onClick={() => {setIsAddingWorkout(false)}} 
+                    variant="contained"
+                    sx={addworkoutButton}
+                    >
+                    Cancel
+                </Button>
+
+                <Button 
+                    onClick={handleSaveWorkout} 
+                    variant="contained"
+                    sx={addworkoutButton}
+                    >
+                    Save Workout Plan
+                </Button>
+            </Box>
 
             <CreateDialog
                 open={dialogOpen}
                 onClose={handleClickClose}
                 title="Choose an Exercise"
-                actions={<Button variant="contained" autoFocus onClick={handleClickClose}>Save Changes</Button>}
+                actions={<Button sx={{m : '0'}} variant="contained" autoFocus onClick={handleClickClose}>Save Changes</Button>}
             >
                 <Box sx={buttonContainer}>
                     <InputField
@@ -216,25 +226,27 @@ function AddWorkout({setIsAddingWorkout}) {
                     />
                 </Box>
                 <Divider />
-                {exercises.map((exercise, i) => (
-                    <Paper
+                <Box sx={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:'20px'}}>
+                    {exercises.map((exercise, i) => (
+                        <Paper
                         key={i}
                         sx={exercisePaperStyles}
                         elevation={10}
-                        square={false}
-                    >
-                        {exercise.name}
-                        <IconButton onClick={() => {
-                            let newExercise = { ...exercise };
-                            newExercise.id = workout.length + 1;
-                            newExercise.sets = 5;
-                            newExercise.reps = 10;
-                            setWorkout([...workout, newExercise]);
-                        }}>
-                        <AddIcon />
-                        </IconButton>
-                    </Paper>
-                ))}
+                            square={false}
+                        >
+                            {exercise.name}
+                            <IconButton onClick={() => {
+                                let newExercise = { ...exercise };
+                                newExercise.id = workout.length + 1;
+                                newExercise.sets = 5;
+                                newExercise.reps = 10;
+                                setWorkout([...workout, newExercise]);
+                            }}>
+                                <AddIcon />
+                            </IconButton>
+                        </Paper>
+                    ))}
+                </Box>
             </CreateDialog>
     </>
     );

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, Divider, IconButton, Paper, TextField, Typography } from "@mui/material";
-import { paperStyles, exercisePaperStyles, buttonContainer, addworkoutButton } from "../styles/styles";
+import { paperStyles, exercisePaperStyles, buttonContainer, addworkoutButton, exerciseListBox } from "../styles/styles";
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import { BACKEND_API, NINJA_API } from "../config/api";
@@ -106,7 +106,7 @@ function AddWorkout({setIsAddingWorkout}) {
             </Box>
 
 
-            <Box sx={{display:'flex', alignItems:'center', flexDirection:'column', width:'100%'}}>
+            <Box sx={exerciseListBox}>
                 {workout && workout.map((exercise, i) => {
                     return(
                             <Paper 
@@ -225,7 +225,7 @@ function AddWorkout({setIsAddingWorkout}) {
                     />
                 </Box>
                 <Divider />
-                <Box sx={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:'20px'}}>
+                <Box sx={exerciseListBox}>
                     {exercises.map((exercise, i) => (
                         <Paper
                         key={i}

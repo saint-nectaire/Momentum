@@ -30,18 +30,21 @@ export const containerStyles = {
 
   export const exercisePaperStyles = {
     display: 'flex',
-    width: '94.2029%',
+    width: '100%',
     justifyContent: 'space-between',
-    padding: '5px 20px',
-    marginTop: '2px',
-    alignItems: 'center'
+    padding: '10px 20px',
+    marginTop: '14px',
+    alignItems: 'center',
+    outline:'15px solid #121212',
+    backgroundColor: 'transparent'
+
   }
 
   export const closeButton = {
     position: 'absolute',
     right: 12,
     top: 8
-}
+  }
 
   export const logoStyles = {
     height: 70,
@@ -67,7 +70,8 @@ export const containerStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     width: 'auto',
-    padding: '50px'
+    padding: '50px',
+    backgroundImage: 'linear-gradient(130deg, #00b, #007, #505, #a0a)'
   }
 
   export const workoutOverviewCard = {
@@ -77,7 +81,10 @@ export const containerStyles = {
     alignItems: 'center',
     width: '20rem',
     height: '15rem',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    outline: '40px solid #121212',
+    backgroundColor: 'transparent',
+    flexGrow: 1
   }
 
   export const addworkoutButton = {
@@ -89,4 +96,22 @@ export const containerStyles = {
   export const inlineBoxStyle = {
     display: 'flex',
     alignItems: 'center'
+  }
+
+  export const workoutOverviewBox = {
+    flexWrap : "wrap", 
+    display: "flex", 
+    justifyContent: 'center', 
+    marginBottom:'40px',
+    backgroundImage: 'linear-gradient(130deg, #00a, #007, #505, #a0a)',
+    width: '72vw'
+  }
+
+  export const exerciseListBox = {
+    display:'flex', 
+    flexDirection:'column', 
+    alignItems:'center', 
+    marginTop:'20px',
+    width:'94.2029%',
+    backgroundImage: 'linear-gradient(130deg, #005, #005, #505, #707)',
   }

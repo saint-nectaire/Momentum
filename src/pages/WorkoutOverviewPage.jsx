@@ -2,7 +2,7 @@ import { Box, IconButton, Paper, Typography } from "@mui/material"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { BACKEND_API } from "../config/api"
-import { inlineBoxStyle, workoutOverviewCard } from "../styles/styles";
+import { inlineBoxStyle, workoutOverviewBox, workoutOverviewCard } from "../styles/styles";
 import { Link as RouterLink } from "react-router-dom";
 import Link from "@mui/material/Link";
 import EditIcon from '@mui/icons-material/Edit';
@@ -50,7 +50,7 @@ const [ editingWorkout, setEditingWorkout ] = useState({});
                 title="Workout Overview"
             />
 
-            <Box sx={{flexWrap : "wrap", display: "flex", justifyContent: 'center', marginBottom:'40px'}}>
+            <Box sx={workoutOverviewBox}>
                 {workouts && workouts.map((workout, i) => {
                     return(
                         <Paper
@@ -99,6 +99,8 @@ const [ editingWorkout, setEditingWorkout ] = useState({});
                         <IconButton onClick={() => {handleAdd()}}>Add Workout<AddIcon/></IconButton>
                     </Paper>
                 }
+                <Box sx={{width:'20rem', height:'auto', flexGrow:1, backgroundColor:'#121212', margin:'20px', outline: '40px solid #121212',}}></Box>
+                <Box sx={{width:'20rem', height:'auto', flexGrow:1, backgroundColor:'#121212', margin:'20px', outline: '40px solid #121212',}}></Box>
 
             </Box>
 

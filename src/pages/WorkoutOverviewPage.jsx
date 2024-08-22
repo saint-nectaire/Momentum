@@ -8,10 +8,11 @@ import Link from "@mui/material/Link";
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import AddWorkout from "../components/AddWorkout";
-import UpdateWorkout from "../components/UpdateWorkout";
-import PageHeader from '../components/PageHeader';
+import AddWorkout from "./AddWorkout";
+import UpdateWorkout from "./UpdateWorkout";
 import { deleteWorkout } from "../services/workoutService";
+
+
 
 
 export default function WorkoutOverviewPage() {

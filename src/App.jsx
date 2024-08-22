@@ -10,6 +10,8 @@ import { Container, CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { containerStyles } from './styles/styles';
 import WorkoutDetailsPage from './pages/WorkoutDetailsPage';
+import WorkoutOverviewPage from './pages/WorkoutOverviewPage';
+
 
 const theme = createTheme({
   palette: {
@@ -30,6 +32,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/about" element={<Aboutpage />} />
+            <Route path="/workouts/" element={<WorkoutOverviewPage />} />
             <Route path="/workouts/:workoutId" element={<WorkoutDetailsPage />} />
             <Route path="/exercises" element={<CustomExercisesPage />} />
             <Route path="/*" element={<Errorpage />} />

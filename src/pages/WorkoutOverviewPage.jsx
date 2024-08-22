@@ -6,13 +6,13 @@ import { inlineBoxStyle, workoutOverviewCard } from "../styles/styles";
 import { Link } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
-import AddWorkout from "./AddWorkout";
-import UpdateWorkout from "./UpdateWorkout";
+import AddWorkout from "../components/AddWorkout";
+import UpdateWorkout from "../components/UpdateWorkout";
 
 
 
 
-export default function WorkoutOverview() {
+export default function WorkoutOverviewPage() {
 const [ workouts, setWorkouts ] = useState([]);
 const [ isAddingWorkout, setIsAddingWorkout ] = useState(false);
 const [ isEditingWorkout, setIsEditingWorkout ] = useState(false);

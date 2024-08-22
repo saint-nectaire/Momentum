@@ -7,12 +7,18 @@ import InfoIcon from '@mui/icons-material/Info';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import { iconStyle } from '../styles/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 
 const menuItems = [
     {
         text: 'Home',
         icon: <HomeIcon sx={iconStyle} />,
         path: '/'
+    },
+    {
+        text: 'Workouts',
+        icon: <DirectionsRunIcon sx={iconStyle} />,
+        path: '/workouts'
     },
     {
         text: 'Exercises',
@@ -25,6 +31,7 @@ const menuItems = [
         path: '/about'
     }
 ];
+
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(false);

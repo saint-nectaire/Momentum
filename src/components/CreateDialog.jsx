@@ -10,7 +10,7 @@ function CreateDialog(props) {
             fullWidth
             maxWidth="md"
         >
-            <DialogTitle sx={{ m: 0, p: 2 }}>
+            <DialogTitle sx={{ m: 0, p: 2 , backgroundColor:'#121212'}}>
                 {props.title}
                 <IconButton
                     edge="end"
@@ -22,11 +22,11 @@ function CreateDialog(props) {
                     <CloseIcon />
                 </IconButton>
             </DialogTitle>
-            <DialogContent dividers>
+            <DialogContent dividers sx={{backgroundColor:'#121212'}}>
                 {props.children}
             </DialogContent>
             {props.actions && (
-                <DialogActions>
+                <DialogActions sx={{backgroundColor:'#121212'}}>
                     {props.actions}
                 </DialogActions>
             )}

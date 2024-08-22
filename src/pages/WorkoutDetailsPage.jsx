@@ -121,26 +121,31 @@ export default function WorkoutDetailsPage() {
                                     {currentWorkout.exercises && 
                                     <>
                                         <Typography variant="h6">
-                                            {currentWorkout.exercises[activeStep].name} || 
-                                            Sets: {currentWorkout.exercises[activeStep].reps} || 
+                                            {currentWorkout.exercises[activeStep].name} --- 
+                                            Sets: {currentWorkout.exercises[activeStep].reps} --- 
                                             Reps: {currentWorkout.exercises[activeStep].sets}
                                         </Typography>
 
                                         <br />
 
-                                        <Typography>
-                                            Workout type: {currentWorkout.exercises[activeStep].type}
-                                        </Typography>
-
-                                        <Typography>
-                                            Workout difficulty: {currentWorkout.exercises[activeStep].difficulty}
-                                        </Typography>
-                                        <Typography>
-                                            Target muscle: {currentWorkout.exercises[activeStep].muscle}
-                                        </Typography>
-                                        <Typography>
-                                            Equipment needed: {currentWorkout.exercises[activeStep].equipment}
-                                        </Typography>
+                                        <Box sx={{display:'flex'}}>
+                                            <Box>
+                                                <Typography>
+                                                    Workout Type -<br />
+                                                    Workout Difficulty -<br />
+                                                    Target Muscle -<br />
+                                                    Equipment Needed -<br />
+                                                </Typography>
+                                            </Box>
+                                            <Box sx={{marginLeft:'30px'}}>
+                                                <Typography>
+                                                    -{currentWorkout.exercises[activeStep].type[0].toUpperCase() + currentWorkout.exercises[activeStep].type.slice(1)} <br />
+                                                    -{currentWorkout.exercises[activeStep].difficulty[0].toUpperCase() + currentWorkout.exercises[activeStep].difficulty.slice(1)} <br />
+                                                    -{currentWorkout.exercises[activeStep].muscle[0].toUpperCase() + currentWorkout.exercises[activeStep].muscle.slice(1)} <br />
+                                                    -{currentWorkout.exercises[activeStep].equipment[0].toUpperCase() + currentWorkout.exercises[activeStep].equipment.slice(1)} <br />
+                                                </Typography>
+                                            </Box>
+                                        </Box>
                                         
                                         <br />
 

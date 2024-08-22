@@ -82,9 +82,7 @@ function AddWorkout({setIsAddingWorkout, onSuccess}) {
     };
     
     const handleSaveWorkout = async () => {
-        let newId = axios.get(BACKEND_API + '/workoutplans').length + 1;
         let newWorkout = {
-            id: newId,
             name: workoutName,
             exercises: workout
         }
@@ -113,7 +111,7 @@ function AddWorkout({setIsAddingWorkout, onSuccess}) {
             </Box>
 
 
-            <Box sx={{display:'flex', alignItems:'center', flexDirection:'column', width:'100%'}}>
+            <Box sx={exerciseListBox}>
                 {workout && workout.map((exercise, i) => {
                     return(
                             <Paper 
@@ -220,7 +218,7 @@ function AddWorkout({setIsAddingWorkout, onSuccess}) {
                     }}
                 />
                 <Divider />
-                <Box sx={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:'20px'}}>
+                <Box sx={exerciseListBox}>
                     {exercises.map((exercise, i) => (
                         <Paper
                         key={i}

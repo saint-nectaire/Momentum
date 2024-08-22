@@ -131,7 +131,7 @@ export default function UpdateWorkout({editingWorkout, setIsEditingWorkout, onSu
                 <><Typography>{workoutName}</Typography> <IconButton onClick={handleChangeName}><EditIcon /></IconButton></>}
             </Box>
 
-
+            <Box sx={exerciseListBox}>
             {workout && workout.map((exercise, i) => {
                 return(
                         <Paper 
@@ -206,6 +206,9 @@ export default function UpdateWorkout({editingWorkout, setIsEditingWorkout, onSu
                 <IconButton onClick={handleClickOpen}><AddIcon /></IconButton>
             </Paper>
 
+            </Box>
+
+
 
             <Box sx={buttonContainer}>
                 <Button 
@@ -243,7 +246,7 @@ export default function UpdateWorkout({editingWorkout, setIsEditingWorkout, onSu
                     }}
                 />
                 <Divider />
-                <Box sx={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:'20px'}}>
+                <Box sx={exerciseListBox}>
                     {exercises.map((exercise, i) => (
                         <Paper
                             key={i}

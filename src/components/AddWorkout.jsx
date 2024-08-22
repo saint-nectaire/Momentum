@@ -47,7 +47,7 @@ function AddWorkout({setIsAddingWorkout}) {
             .then(([ninjaResponse, backendResponse]) => {
                 const ninjaNames = ninjaResponse.data.map(exercise => exercise.name);
                 const filteredBackendData = backendResponse.data.filter(exercise => !ninjaNames.includes(exercise.name));
-
+                console.log(ninjaResponse)
                 setExercises([
                     ...ninjaResponse.data,
                     ...filteredBackendData

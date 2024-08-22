@@ -2,7 +2,7 @@ import { Box, IconButton, Paper, Typography } from "@mui/material"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { BACKEND_API } from "../config/api"
-import { inlineBoxStyle, paperStyles, workoutOverviewCard } from "../styles/styles";
+import { inlineBoxStyle, workoutOverviewCard } from "../styles/styles";
 import { Link } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
@@ -62,7 +62,7 @@ const [ editingWorkout, setEditingWorkout ] = useState({});
                         >
                             <Box sx={inlineBoxStyle}>
                                 <Link to={`/workouts/${i+1}`}>
-                                    <Typography variant="h5">
+                                    <Typography color="primary" variant="h5">
                                         {workout.name}
                                     </Typography>
                                 </Link>

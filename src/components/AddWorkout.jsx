@@ -78,9 +78,7 @@ function AddWorkout({setIsAddingWorkout}) {
     }
     
     const handleSaveWorkout = () => {
-        let newId = axios.get(BACKEND_API + '/workoutplans').length + 1;
         let newWorkout = {
-            id: newId,
             name: workoutName,
             exercises: workout
         }

@@ -62,7 +62,7 @@ const [ editingWorkout, setEditingWorkout ] = useState({});
                             <Box sx={inlineBoxStyle}>
                                 <Link 
                                     underline="none"
-                                    to={`/workouts/${i+1}`}
+                                    to={`/workouts/${workout.id}`}
                                     component={RouterLink}
                                     sx={{minWidth:'200px', display:'flex', justifyContent:'center'}}
                                 >
@@ -79,7 +79,7 @@ const [ editingWorkout, setEditingWorkout ] = useState({});
                                     <DeleteIcon />
                                 </IconButton>
                             </Box>
-                            
+
                             <Box>
                                 <Typography variant="h6">
                                     Amount of exercises: {workout.exercises?.length || 0}

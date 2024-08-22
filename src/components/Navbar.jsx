@@ -1,23 +1,27 @@
 import { Link } from 'react-router-dom';
-import { AppBar, Toolbar, IconButton, Box } from '@mui/material';
-import logo from '../assets/logo.png';
-import { logoStyles, toolBarStyles } from '../styles/styles'
+import { AppBar, Toolbar, IconButton, Typography } from '@mui/material';
+import { toolBarStyles } from '../styles/styles';
 
 function Navbar() {
     return (
-      <AppBar position="sticky">
-        <Toolbar sx={toolBarStyles}>
-          <IconButton edge="start" component={Link} to="/">
-            <Box
-              component="img"
-              src={logo}
-              alt="Logo"
-              sx={logoStyles}
-            />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
+        <AppBar position="sticky">
+            <Toolbar sx={toolBarStyles}>
+                <IconButton edge="start" component={Link} to="/" sx={{ p: 0 }}>
+                    <Typography 
+                        variant="h6" 
+                        component="div" 
+                        sx={{
+                            fontWeight: 'bold',
+                            textTransform: 'uppercase',
+                            letterSpacing: '1px',
+                        }}
+                    >
+                        Momentum
+                    </Typography>
+                </IconButton>
+            </Toolbar>
+        </AppBar>
     );
-  }
+}
 
 export default Navbar;

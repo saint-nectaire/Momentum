@@ -11,19 +11,27 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { typeValueOptions, muscleValueOptions, difficultyValueOptions } from '../utils/utils';
 import InputField from "./InputField";
 import CreateDialog from "./CreateDialog";
-import { createWorkout } from "../services/workoutService";
+import { updateWorkout } from "../services/workoutService";
 
 
-function AddWorkout({setIsAddingWorkout}) {
-  const [workout, setWorkout] = useState([]);
-  const [exercises, setExercises] = useState([]);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [muscle, setMuscle] = useState('');
-  const [exerciseType, setExerciseType] = useState('');
-  const [difficulty, setDifficulty] = useState('');
-  const [workoutName, setWorkoutName] = useState('New Workout');
-  const [editingName, setEditingName] = useState(false);
 
+
+
+export default function UpdateWorkout({editingWorkout, setIsEditingWorkout}) {
+    const [workout, setWorkout] = useState([]);
+    const [exercises, setExercises] = useState([]);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [muscle, setMuscle] = useState('');
+    const [exerciseType, setExerciseType] = useState('');
+    const [difficulty, setDifficulty] = useState('');
+    const [workoutName, setWorkoutName] = useState('');
+    const [editingName, setEditingName] = useState(true);
+
+    useEffect(() => {    
+        let thisWorkout = structuredClone(editingWorkout);
+        setWorkout(thisWorkout.exercises);
+        setWorkoutName(thisWorkout.name);
+}, [editingWorkout])
 
     useEffect(() => {
         const queryParams = [];
@@ -58,6 +66,7 @@ function AddWorkout({setIsAddingWorkout}) {
 
     }, [muscle, exerciseType, difficulty])
 
+
     const handleClickOpen = () => {
         setDialogOpen(true);
     }
@@ -77,16 +86,15 @@ function AddWorkout({setIsAddingWorkout}) {
     const handleChangeDifficulty = (e) => {
         setDifficulty(e.target.value)
     }
-    
+
     const handleSaveWorkout = () => {
-        let newId = axios.get(BACKEND_API + '/workoutplans').length + 1;
         let newWorkout = {
-            id: newId,
+            id: editingWorkout.id,
             name: workoutName,
             exercises: workout
         }
-        
-        createWorkout(newWorkout);
+
+        updateWorkout(newWorkout.id, newWorkout);
     }
     
     const handleChangeName = () => {
@@ -99,12 +107,12 @@ function AddWorkout({setIsAddingWorkout}) {
     }
 
 
-    return ( 
+    return(
         <>
             <Box sx={buttonContainer}>
             {editingName ? 
-            <><TextField autoFocus onChange={(v) => {setWorkoutName(v.target.value)}} fullWidth label="Workout Name" id="workoutName"/> <IconButton onClick={handleChangeName}><CheckIcon /></IconButton></> : 
-            <><Typography>{workoutName}</Typography> <IconButton onClick={handleChangeName}><EditIcon /></IconButton></>}
+                <><TextField autoFocus onChange={(v) => {setWorkoutName(v.target.value)}} fullWidth label="Workout Name" id="workoutName"/> <IconButton onClick={handleChangeName}><CheckIcon /></IconButton></> : 
+                <><Typography>{workoutName}</Typography> <IconButton onClick={handleChangeName}><EditIcon /></IconButton></>}
             </Box>
 
 
@@ -172,6 +180,7 @@ function AddWorkout({setIsAddingWorkout}) {
                 )
             })} 
 
+
             <Paper sx={paperStyles} elevation={10} square={false}>
                 add exercise
                 <IconButton onClick={handleClickOpen}><AddIcon /></IconButton>
@@ -236,9 +245,9 @@ function AddWorkout({setIsAddingWorkout}) {
                     </Paper>
                 ))}
             </CreateDialog>
-    </>
-    );
+
+
+
+        </>
+    )
 }
-
-
-export default AddWorkout;

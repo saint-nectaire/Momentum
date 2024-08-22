@@ -84,4 +84,9 @@ export const containerStyles = {
   export const addworkoutButton = {
     marginBottom: "200px"
   }
+
   export const iconStyle = { mr: 2 }
+
+  export const inlineBoxStyle = {
+    display: 'flex'
+  }

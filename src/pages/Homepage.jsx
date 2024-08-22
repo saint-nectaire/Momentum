@@ -12,7 +12,6 @@ function Homepage() {
             />
 
             <WorkoutOverview />
-            <AddWorkout />
             
 
         </Container>

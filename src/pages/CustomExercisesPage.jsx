@@ -8,6 +8,9 @@ import PageHeader from '../components/PageHeader';
 import ExerciseDetails from '../components/ExerciseDetails';
 import ExerciseListItem from '../components/ExerciseListItem';
 import ErrorSnackbar from '../components/ErrorSnackbar';
+import ExercisesFilter from '../components/ExercisesFilter';
+import { createQueryParams } from '../utils/utils';
+
 
 function CustomExercisesPage() {
     const [exercises, setExercises] = useState([]);
@@ -15,22 +18,29 @@ function CustomExercisesPage() {
     const [selectedExercise, setSelectedExercise] = useState(null);
     const [isCreating, setIsCreating] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
-    const [refreshTrigger, setRefreshTrigger] = useState(false);
     const [error, setError] = useState(null);
+    const [filterOptions, setFilterOptions] = useState({
+        muscle: '',
+        type: '',
+        difficulty: ''
+    });
+
+    const fetchExercises = async () => {
+        const queryParams = createQueryParams(filterOptions);
+        try {
+            const fetchedExercises = await getExercises(queryParams);
+            setExercises(fetchedExercises);
+            if (selectedExercise) {
+                setSelectedExercise(fetchedExercises.find(ex => ex.id === selectedExercise.id));
+            }
+        } catch {
+            handleError('Failed to load exercises. Please try again later.');
+        }
+    };
 
     useEffect(() => {
-        (async () => {
-            try {
-                const fetchedExercises = await getExercises();
-                setExercises(fetchedExercises);
-                if (selectedExercise) {
-                    setSelectedExercise(fetchedExercises.find(ex => ex.id === selectedExercise.id));
-                }
-            } catch {
-                handleError('Failed to load exercises. Please try again later.');
-            }
-        })();
-    }, [refreshTrigger]);
+        fetchExercises();
+    }, [filterOptions]);
 
     const handleOpenDialog = (exercise = null, isCreating = false) => {
         setSelectedExercise(exercise);
@@ -43,14 +53,9 @@ function CustomExercisesPage() {
         setOpenDialog(false);
     };
 
-    const handleCreateSuccess = () => {
+    const handleSuccess = () => {
         handleCloseDialog();
-        setRefreshTrigger(prev => !prev); // Trigger data refresh
-    };
-
-    const handleUpdateSuccess = () => {
-        setRefreshTrigger(prev => !prev);
-        setIsEditing(false);
+        fetchExercises();
     };
 
     const handleEdit = () => {
@@ -60,8 +65,8 @@ function CustomExercisesPage() {
     const handleDelete = async (id) => {
         try {
             await deleteExercise(id);
-            setOpenDialog(false);
-            setRefreshTrigger(prev => !prev);
+            handleCloseDialog();
+            fetchExercises();
         } catch {
             handleError('Failed to delete exercise. Please try again later.');
         }
@@ -73,7 +78,23 @@ function CustomExercisesPage() {
 
     const handleError = (errorMessage) => {
         setError(errorMessage);
-    }
+    };
+
+    const handleFilterChange = (e) => {
+        const { name, value } = e.target;
+        setFilterOptions(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const resetFilters = () => {
+        setFilterOptions({
+            muscle: '',
+            type: '',
+            difficulty: ''
+        });
+    };
 
     return (
         <Container component="main">
@@ -81,6 +102,14 @@ function CustomExercisesPage() {
                 title="Exercises"
                 subtitle="Add and manage your custom exercises."
             />
+            <ExercisesFilter
+                muscle={filterOptions.muscle}
+                type={filterOptions.type}
+                difficulty={filterOptions.difficulty}
+                handleFilterChange={handleFilterChange}
+                resetFilters={resetFilters}
+            />
+
             <Button 
                 variant="contained" 
                 color="primary" 
@@ -95,11 +124,11 @@ function CustomExercisesPage() {
                 title={isCreating ? "Create New Exercise" : isEditing ? "Edit Exercise" : "Exercise Details"}
             >
                 {isCreating ? (
-                    <CreateExerciseForm onSuccess={handleCreateSuccess} onError={handleError}/>
+                    <CreateExerciseForm onSuccess={handleSuccess} onError={handleError}/>
                 ) : isEditing && selectedExercise ? (
                     <UpdateExerciseForm 
                         exercise={selectedExercise} 
-                        onSuccess={handleUpdateSuccess} 
+                        onSuccess={handleSuccess} 
                         onError={handleError}
                     />
                 ) : (
@@ -111,11 +140,11 @@ function CustomExercisesPage() {
                 )}
             </CreateDialog>
             <List>
-                {exercises && exercises.map((exercise, index) => (
+                {exercises.map((exercise) => (
                     <ExerciseListItem
-                        key={index}
+                        key={exercise.id}
                         exercise={exercise}
-                        onClick={(selected) => handleOpenDialog(selected, false)}
+                        onClick={() => handleOpenDialog(exercise, false)}
                         onDelete={handleDelete} 
                     />
                 ))}

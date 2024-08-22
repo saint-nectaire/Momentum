@@ -32,3 +32,10 @@ export const difficultyValueOptions = [
     { value: 'intermediate', label: 'Intermediate' },
     { value: 'expert', label: 'Expert' }
 ]
+
+export const createQueryParams = (filters) => {
+    return Object.entries(filters)
+        .filter(([, value]) => value)
+        .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+        .join('&');
+};

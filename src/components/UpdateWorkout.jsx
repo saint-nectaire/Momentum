@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Box, Divider, IconButton, Paper, TextField, Typography } from "@mui/material";
-import { paperStyles, exercisePaperStyles, buttonContainer, addworkoutButton } from "../styles/styles";
+import { exercisePaperStyles, buttonContainer, addworkoutButton } from "../styles/styles";
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import { BACKEND_API, NINJA_API } from "../config/api";
@@ -9,17 +9,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete'
-import { typeValueOptions, muscleValueOptions, difficultyValueOptions } from '../utils/utils';
-import InputField from "./InputField";
 import CreateDialog from "./CreateDialog";
 import { updateWorkout } from "../services/workoutService";
-import { getWorkouts } from "../services/workoutService";
+import ExercisesFilter from '../components/ExercisesFilter';
 
 
-
-
-
-export default function UpdateWorkout({editingWorkout, setIsEditingWorkout}) {
+export default function UpdateWorkout({editingWorkout, setIsEditingWorkout, onSuccess}) {
     const [workout, setWorkout] = useState([]);
     const [exercises, setExercises] = useState([]);
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -77,27 +72,34 @@ export default function UpdateWorkout({editingWorkout, setIsEditingWorkout}) {
         setDialogOpen(false);
     }
 
-    const handleChangeMuscle = (e) => {
-        setMuscle(e.target.value)
-    }
-
-    const handleChangeType = (e) => {
-        setExerciseType(e.target.value)
-    }
-
-    const handleChangeDifficulty = (e) => {
-        setDifficulty(e.target.value)
-    }
-
-    const handleSaveWorkout = () => {
+    const handleFilterChange = (e) => {
+        const { name, value } = e.target;
+        switch (name) {
+            case 'muscle':
+                setMuscle(value);
+                break;
+            case 'type':
+                setExerciseType(value);
+                break;
+            case 'difficulty':
+                setDifficulty(value);
+                break;
+            default:
+                break;
+        }
+    };
+    
+    const handleSaveWorkout = async () => {
         let newWorkout = {
             id: editingWorkout.id,
             name: workoutName,
             exercises: workout
         }
 
-        updateWorkout(newWorkout.id, newWorkout);
+        await updateWorkout(newWorkout.id, newWorkout);
         setIsEditingWorkout(false);
+        console.log(111)
+        onSuccess();
     }
     
     const handleChangeName = () => {
@@ -229,29 +231,17 @@ export default function UpdateWorkout({editingWorkout, setIsEditingWorkout}) {
                 title="Choose an Exercise"
                 actions={<Button variant="contained" autoFocus onClick={handleClickClose}>Save Changes</Button>}
             >
-                <Box sx={buttonContainer}>
-                    <InputField
-                        label="Muscle"
-                        name="muscle"
-                        value={muscle}
-                        onChange={handleChangeMuscle}
-                        options={muscleValueOptions}
-                    />
-                    <InputField
-                        label="Exercise Type"
-                        name="exerciseType"
-                        value={exerciseType}
-                        onChange={handleChangeType}
-                        options={typeValueOptions}
-                    />
-                    <InputField
-                        label="Difficulty"
-                        name="difficulty"
-                        value={difficulty}
-                        onChange={handleChangeDifficulty}
-                        options={difficultyValueOptions}
-                    />
-                </Box>
+                <ExercisesFilter
+                    muscle={muscle}
+                    type={exerciseType}
+                    difficulty={difficulty}
+                    handleFilterChange={handleFilterChange}
+                    resetFilters={() => {
+                        setMuscle('');
+                        setExerciseType('');
+                        setDifficulty('');
+                    }}
+                />
                 <Divider />
                 <Box sx={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:'20px'}}>
                     {exercises.map((exercise, i) => (

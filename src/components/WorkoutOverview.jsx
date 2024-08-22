@@ -5,12 +5,18 @@ import { BACKEND_API } from "../config/api"
 import { inlineBoxStyle, paperStyles, workoutOverviewCard } from "../styles/styles";
 import { Link } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
+import AddWorkout from "./AddWorkout";
+import UpdateWorkout from "./UpdateWorkout";
 
 
 
 
 export default function WorkoutOverview() {
 const [ workouts, setWorkouts ] = useState([]);
+const [ isAddingWorkout, setIsAddingWorkout ] = useState(false);
+const [ isEditingWorkout, setIsEditingWorkout ] = useState(false);
+const [ editingWorkout, setEditingWorkout ] = useState({});
 
     useEffect(() => {
         axios.get(BACKEND_API + 'workoutplans')
@@ -22,13 +28,24 @@ const [ workouts, setWorkouts ] = useState([]);
         })
     }, [workouts])
 
+    const handleEdit = (workout) => {
+        if(isAddingWorkout){setIsAddingWorkout(false)}
+        setIsEditingWorkout(true);
+        setEditingWorkout(workout);
+    }
+    
+    const handleAdd = () => {
+        if(isEditingWorkout){setIsEditingWorkout(false)}
+        setIsAddingWorkout(true)
+    }
+
 
     return(
         <>
 
             <Box>
                 <Typography variant="h4" sx={{textAlign:'center'}}>
-                    Workout overview
+                    Workout Overview
                 </Typography>
             </Box>
 
@@ -48,11 +65,11 @@ const [ workouts, setWorkouts ] = useState([]);
                                         {workout.name}
                                     </Typography>
                                 </Link>
-                                <IconButton><EditIcon/></IconButton>
+                                <IconButton onClick={() => {handleEdit(workout)}}><EditIcon/></IconButton>
                             </Box>
                             <Box>
                                 <Typography variant="h6">
-                                    Amount of exercises: {workout.exercises.length}
+                                    Amount of exercises: {workout.exercises?.length || 0}
                                 </Typography>
                             </Box>
                         
@@ -60,8 +77,23 @@ const [ workouts, setWorkouts ] = useState([]);
 
                     )
                 })}
+                {!isAddingWorkout &&
+                    <Paper
+                        sx={workoutOverviewCard} 
+                        elevation={10} 
+                        square={false}    
+                    >
+                        <IconButton onClick={() => {handleAdd()}}>Add Workout<AddIcon/></IconButton>
+                    </Paper>
+                }
 
             </Box>
+
+            {isAddingWorkout && <AddWorkout setIsAddingWorkout={setIsAddingWorkout}/>}
+            {isEditingWorkout && <UpdateWorkout setIsEditingWorkout={setIsEditingWorkout} editingWorkout={editingWorkout}/>}
+
+
+
         </>
     )
 }

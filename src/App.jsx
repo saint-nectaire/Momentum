@@ -11,11 +11,15 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { containerStyles } from './styles/styles';
 import WorkoutDetailsPage from './pages/WorkoutDetailsPage';
 import WorkoutOverviewPage from './pages/WorkoutOverviewPage';
+import "@fontsource/lora";
 
 
 const theme = createTheme({
   palette: {
     mode: 'dark',
+  },
+  typography: {
+    fontFamily: "Lora",
   },
 });
 

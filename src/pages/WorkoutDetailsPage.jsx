@@ -184,7 +184,7 @@ export default function WorkoutDetailsPage() {
 
                 <Button 
                     variant="contained"
-                    onClick={() => {navigate("/")}}
+                    onClick={() => {navigate("/workouts")}}
                 >
                     Back to Overview
                 </Button>

@@ -17,7 +17,6 @@ export const containerStyles = {
     width: '100%',
     bgcolor: 'background.default',
     p: 2,
-    zIndex: theme => theme.zIndex.drawer + 1,
   };
 
   export const paperStyles = {

@@ -14,7 +14,7 @@ import { updateWorkout } from "../services/workoutService";
 import ExercisesFilter from '../components/ExercisesFilter';
 
 
-export default function UpdateWorkout({editingWorkout, setIsEditingWorkout}) {
+export default function UpdateWorkout({editingWorkout, setIsEditingWorkout, onSuccess}) {
     const [workout, setWorkout] = useState([]);
     const [exercises, setExercises] = useState([]);
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -89,16 +89,17 @@ export default function UpdateWorkout({editingWorkout, setIsEditingWorkout}) {
         }
     };
     
-
-    const handleSaveWorkout = () => {
+    const handleSaveWorkout = async () => {
         let newWorkout = {
             id: editingWorkout.id,
             name: workoutName,
             exercises: workout
         }
 
-        updateWorkout(newWorkout.id, newWorkout);
+        await updateWorkout(newWorkout.id, newWorkout);
         setIsEditingWorkout(false);
+        console.log(111)
+        onSuccess();
     }
     
     const handleChangeName = () => {

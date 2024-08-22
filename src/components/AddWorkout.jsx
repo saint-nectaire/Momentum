@@ -13,7 +13,7 @@ import { createWorkout } from "../services/workoutService";
 import ExercisesFilter from '../components/ExercisesFilter';
 
 
-function AddWorkout({setIsAddingWorkout}) {
+function AddWorkout({setIsAddingWorkout, onSuccess}) {
   const [workout, setWorkout] = useState([]);
   const [exercises, setExercises] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -81,7 +81,7 @@ function AddWorkout({setIsAddingWorkout}) {
         }
     };
     
-    const handleSaveWorkout = () => {
+    const handleSaveWorkout = async () => {
         let newId = axios.get(BACKEND_API + '/workoutplans').length + 1;
         let newWorkout = {
             id: newId,
@@ -89,8 +89,9 @@ function AddWorkout({setIsAddingWorkout}) {
             exercises: workout
         }
         
-        createWorkout(newWorkout);
+        await createWorkout(newWorkout);
         setIsAddingWorkout(false);
+        onSuccess();
     }
     
     const handleChangeName = () => {

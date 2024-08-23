@@ -5,7 +5,7 @@ const exercisesUrl = `${BACKEND_API}/exercises`;
 
 export const getExercises = async (queryParams = []) => {
     try {
-        const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
+        const queryString = queryParams.length ? `?${queryParams}` : '';
         const response = await axios.get(`${exercisesUrl}${queryString}`);
         return response.data;
     } catch (error) {
